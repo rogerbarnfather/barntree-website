@@ -153,9 +153,111 @@ in the app with no change to it.</p>
 <p><code>TreeStoreFactory</code> gives a store over one directory of <code>.barntree.json</code> files, found by the <code>name</code> inside each file, not
 by where they are. It offers <code>names()</code>, <code>has()</code>, <code>read()</code>, <code>write()</code> and <code>delete()</code>. With
 <code>writable: false</code> it refuses to write, which is how a shipped catalogue is read.</p>
+<h2 id="listen">Listen to changes <a class="anchor" href="#listen" aria-label="Link to this section">#</a></h2>
+<p>A store can tell your code of each change it writes, so your code can react without the store knowing about it. Make a registry with
+<code>ListenerRegistryFactory</code>, register a listener for a kind of change, <code>before</code> the write or <code>after</code> it, and pass the
+registry to the store’s factory as <code>listeners:</code>. This script keeps a diary of the beds, and refuses to clear one that is still growing:</p>
+<pre><code>&lt;?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Rmb32\Barntree\Api\Contract\ListenerFailureHandlerInterface;
+use Rmb32\Barntree\Api\Contract\ListenerInterface;
+use Rmb32\Barntree\Api\Exception\Event\VetoedException;
+use Rmb32\Barntree\Api\Factory\ListenerRegistryFactory;
+use Rmb32\Barntree\Api\Factory\TreeEditorFactory;
+use Rmb32\Barntree\Api\Factory\TreeFactory;
+use Rmb32\Barntree\Api\Factory\TreeStoreFactory;
+use Rmb32\Barntree\Api\ValueObject\Event\Change\MemberAdded;
+use Rmb32\Barntree\Api\ValueObject\Event\Change\MemberChangeInterface;
+use Rmb32\Barntree\Api\ValueObject\Event\Change\MemberRemoved;
+use Rmb32\Barntree\Api\ValueObject\Event\Event;
+use Rmb32\Barntree\Api\ValueObject\ItemName;
+use Rmb32\Barntree\Api\ValueObject\ItemPath;
+
+/** @implements ListenerInterface&lt;MemberChangeInterface&gt; */
+final readonly class Diary implements ListenerInterface
+{
+    public function handle(Event $event): void
+    {
+        $change = $event-&gt;payload;
+        if ($change instanceof MemberAdded) {
+            echo 'Planted ', $change-&gt;path, PHP_EOL;
+        }
+        if ($change instanceof MemberRemoved) {
+            echo 'Cleared ', $change-&gt;path, PHP_EOL;
+        }
+    }
+}
+
+/** @implements ListenerInterface&lt;MemberRemoved&gt; */
+final readonly class StillGrowing implements ListenerInterface
+{
+    public function handle(Event $event): void
+    {
+        if ((string) $event-&gt;payload-&gt;path === 'Beds/Beans') {
+            throw new VetoedException('the beans are still growing');
+        }
+    }
+}
+
+final readonly class Report implements ListenerFailureHandlerInterface
+{
+    public function failed(Event $event, Throwable $failure): void
+    {
+        echo 'A listener failed: ', $failure-&gt;getMessage(), PHP_EOL;
+    }
+}
+
+$listeners = new ListenerRegistryFactory()-&gt;create(new Report());
+$listeners-&gt;after(MemberChangeInterface::class, new Diary());
+$listeners-&gt;before(MemberRemoved::class, new StillGrowing());
+
+$store = new TreeStoreFactory()-&gt;create($argv[1], listeners: $listeners);
+$tree = new TreeFactory()-&gt;create([
+    'formatVersion' =&gt; 1,
+    'name' =&gt; 'Allotment',
+    'description' =&gt; 'A plot of ground, rented to grow food on.',
+    'root' =&gt; 'Allotment',
+    'types' =&gt; [
+        'Allotment' =&gt; ['name' =&gt; 'Allotment', 'meaning' =&gt; 'The whole plot.', 'kind' =&gt; 'map', 'of' =&gt; ['Beds']],
+        'Beds' =&gt; ['name' =&gt; 'Beds', 'meaning' =&gt; 'The raised beds.', 'kind' =&gt; 'list', 'of' =&gt; 'Bed'],
+        'Bed' =&gt; ['name' =&gt; 'Bed', 'meaning' =&gt; 'One raised bed.', 'kind' =&gt; 'leaf'],
+    ],
+]);
+$store-&gt;write($tree);
+
+$editor = new TreeEditorFactory()-&gt;create();
+$beds = new ItemPath('Beds');
+$tree = $editor-&gt;addMember($tree, $beds, new ItemName('Beans'));
+$tree = $editor-&gt;addMember($tree, $beds, new ItemName('Leeks'));
+$store-&gt;write($tree);
+
+try {
+    $store-&gt;write($editor-&gt;removeMember($tree, new ItemPath('Beds', 'Beans')));
+} catch (VetoedException $e) {
+    echo 'Refused: ', $e-&gt;reason, PHP_EOL;
+}
+$store-&gt;write($editor-&gt;removeMember($tree, new ItemPath('Beds', 'Leeks')));</code></pre>
+<p>Run with an empty folder, it prints:</p>
+<pre><code>Planted Beds/Beans
+Planted Beds/Leeks
+Refused: the beans are still growing
+Cleared Beds/Leeks</code></pre>
+<ul><li>A listener hears each change as its own event: a member added, removed, renamed or moved, a type added or renamed, a tag declared,
+and so on. It can listen for one kind, or for a whole group such as <code>MemberChangeInterface</code>. <code>TreeWrite</code> holds the whole
+Tree before and after the write.</li><li>Each event carries the Tree’s name, where the write came from (<code>origin:</code> on the factory: the command line,
+the app, your code or an import), and, for a Template or Construction, its reason and revision.</li><li>A listener <code>before</code> the write
+may refuse it by throwing <code>VetoedException</code>, and nothing is written. The store may still refuse a write after that, for its own reasons,
+so do your work <code>after</code>.</li><li>A listener <code>after</code> the write can’t undo it. If it fails, the failure goes to the handler you gave
+the registry, and the other listeners still hear.</li><li>A listener may not write the Tree it is being told about.</li><li>The Template and
+Construction factories, <code>forBarn()</code> and <code>inDirectory()</code>, take the same <code>listeners:</code> and <code>origin:</code>. Without them,
+nothing listens.</li></ul>
 <h2 id="examples">More examples <a class="anchor" href="#examples" aria-label="Link to this section">#</a></h2>
 <p>The package carries runnable examples in its <code>examples/</code> folder, each with the output it prints: <code>quickstart</code>,
-<code>house</code>, <code>projections</code>, <code>refusals</code> and <code>revisions</code>.</p>
+<code>house</code>, <code>projections</code>, <code>refusals</code>, <code>storage</code>, <code>revisions</code> and <code>events</code>.</p>
         <div class="docs-next"><a href="cli.html">← Command reference</a><a href="install.html">Installation →</a></div>
       </article>
     </div>
