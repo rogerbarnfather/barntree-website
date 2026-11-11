@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisions and history · Barntree</title>
+  <meta name="description" content="Read the history of a Barntree Template or Construction, open an earlier revision, and see where a history begins.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html" aria-current="page">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Revisions and history</h1>
+        <p class="lede">Every saved change, kept as it was.</p>
+<p>Every explicit save of a Template or a Construction records an immutable <a href="glossary.html#revision">revision</a>. A save that
+changes nothing records none. A Template and a Construction each have their own history, and renaming keeps it. A copy starts its own.</p>
+<h2 id="read">Read a history <a class="anchor" href="#read" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:history 3207a1c11fb74907574c9158b2fa812f
++----------+----------------------------------+----------------------------------+----------------------+----------------------------+
+| Revision | GUID                             | Recorded at                      | Event                | Identifier                 |
++----------+----------------------------------+----------------------------------+----------------------+----------------------------+
+| 5        | 99459a8719ba0fb2f78c9342ba13a818 | 2026-11-11T16:21:25.484955+00:00 | Member deleted       | Bed — Courgettes           |
+| 4        | 774a0ce3377400ef1a4a0d2edd23c570 | 2026-11-11T16:21:25.216984+00:00 | Member renamed       | Bed — Carrots → Courgettes |
+| 3        | f3d1bd75b615327c68370767096738d8 | 2026-11-11T16:21:24.809730+00:00 | Member added         | Bed — Carrots              |
+| 2        | 372bbb6fad1f6bde9869042c7fcfcb29 | 2026-11-11T16:21:24.672595+00:00 | Member added         | Bed — Beans                |
+| 1        | 3ead1efb447667fabc3edc3520dc4d39 | 2026-11-11T16:21:23.862587+00:00 | Construction created | Plot 12                    |
++----------+----------------------------------+----------------------------------+----------------------+----------------------------+
+Page 1 of 1 · 5 revisions</code></pre>
+<p>Newest first. Each row has the revision number, its full id (a GUID), the date it was recorded, and the events and identifiers
+that changed. A save that combined several changes lists every event.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:history Allotment
++----------+----------------------------------+----------------------------------+------------------+------------+
+| Revision | GUID                             | Recorded at                      | Event            | Identifier |
++----------+----------------------------------+----------------------------------+------------------+------------+
+| 4        | 06d23b48d178e90552d6283ee018486c | 2026-11-11T16:21:26.581869+00:00 | Map updated      | Allotment  |
+| 3        | d189249a8184d59c93349fccc55cfed9 | 2026-11-11T16:21:26.443957+00:00 | Leaf created     | Greenhouse |
+| 2        | 92d19b533f1e626d91c1f5c4b66a3ef3 | 2026-11-11T16:21:26.307765+00:00 | Template updated | Allotment  |
+| 1        | 3c46bfb7e7251ee4a668cf2dd6a79557 | 2026-11-11T16:21:21.728164+00:00 | Template created | Allotment  |
++----------+----------------------------------+----------------------------------+------------------+------------+
+Page 1 of 1 · 4 revisions</code></pre>
+<p>A Template’s events say what kind of type changed: <em>Leaf created</em>, <em>Map updated</em>, <em>Template updated</em>. Pages hold 25
+revisions by default; <code>--limit</code> takes 1 to 100, and <code>--page</code> chooses the page.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:history 3207a1c11fb74907574c9158b2fa812f --page=2 --limit=2
++----------+----------------------------------+----------------------------------+----------------+----------------------------+
+| Revision | GUID                             | Recorded at                      | Event          | Identifier                 |
++----------+----------------------------------+----------------------------------+----------------+----------------------------+
+| 5        | 99459a8719ba0fb2f78c9342ba13a818 | 2026-11-11T16:21:25.484955+00:00 | Member deleted | Bed — Courgettes           |
+| 4        | 774a0ce3377400ef1a4a0d2edd23c570 | 2026-11-11T16:21:25.216984+00:00 | Member renamed | Bed — Carrots → Courgettes |
++----------+----------------------------------+----------------------------------+----------------+----------------------------+
+Page 2 of 4 · 7 revisions</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:history 3207a1c11fb74907574c9158b2fa812f --page=9
+Page exceeds the available history.</code></pre>
+<h2 id="snapshots">Read an earlier state <a class="anchor" href="#snapshots" aria-label="Link to this section">#</a></h2>
+<p>A revision is a snapshot you can read without changing anything. Give its id:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:show Allotment --revision=3c46bfb7e7251ee4a668cf2dd6a79557
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+Allotment [Allotment, map]
+  Beds [Beds, list]
+    Bed [Bed, leaf]
+  Compost [Compost, leaf]
+  Shed [Shed, leaf]</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:show 3207a1c11fb74907574c9158b2fa812f --revision=REVISION</code></pre>
+<p>A revision id and a file token are different things. A token identifies the exact current file. A revision id identifies a saved
+snapshot for good. A file edited outside Barntree can differ from its last recorded revision, and a read says so when no recorded
+revision matches.</p>
+<h2 id="baseline">Where history begins <a class="anchor" href="#baseline" aria-label="Link to this section">#</a></h2>
+<p>A Template file you add by hand has no history yet. Barntree doesn’t import it; it is listed with no revision. The first time you
+read its history, or open it in the app, it records the file as it is, once, and that is revision 1. Its date is when history began, not
+when the file was written.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:list
+Barn: …/allotment
++-----------+----------------------------------+----------+-----------------+
+| Name      | Document ID                      | Revision | Source Template |
++-----------+----------------------------------+----------+-----------------+
+| Allotment | bd3708f38810ec991ef9a2470b5abe52 | 4        |                 |
+| Kitchen   |                                  |          |                 |
++-----------+----------------------------------+----------+-----------------+</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:history Kitchen
++----------+----------------------------------+----------------------------------+------------------+------------+
+| Revision | GUID                             | Recorded at                      | Event            | Identifier |
++----------+----------------------------------+----------------------------------+------------------+------------+
+| 1        | c8f33784e5fdec449ef0983f8057b5f3 | 2026-11-11T16:21:32.524023+00:00 | Template created | Kitchen    |
++----------+----------------------------------+----------------------------------+------------------+------------+
+Page 1 of 1 · 1 revisions</code></pre>
+<p>Other read commands don’t create revisions.</p>
+<h2 id="source">The Construction keeps its source <a class="anchor" href="#source" aria-label="Link to this section">#</a></h2>
+<p>Each Construction records the Template revision it came from. In the app, its overview links to that exact revision as a read-only
+snapshot, with no need for the live Template. Restoring an old revision, or moving a Construction to a newer Template, is not part of this
+version.</p>
+<h2 id="in-the-app">In the browser app <a class="anchor" href="#in-the-app" aria-label="Link to this section">#</a></h2>
+<p><em>History</em> is in each Template’s and Construction’s own menu. It shows a compact table, newest first, 25 to a page, and the
+newest is marked <em>Current</em>. Select a revision’s number to open its read-only snapshot and its full id; <strong>Back to history</strong>
+returns to the same page.</p>
+<figure><div class="shot"><div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · History</span></div><img src="../assets/screens/barntree-tpl-history.webp" width="2560" height="1720" loading="lazy" alt="The History of the Allotment Template: four revisions, newest first. Revision 4 is marked Current, a Map updated event for Allotment. Revision 3 is Leaf created for Greenhouse, revision 2 is Template updated and revision 1 is Template created."></div><figcaption>A Template’s history in the browser app.</figcaption></figure>
+        <div class="docs-next"><a href="constructions.html">← Make a Construction</a><a href="export.html">Read a Tree another way →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

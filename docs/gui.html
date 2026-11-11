@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The browser app · Barntree</title>
+  <meta name="description" content="The Barntree browser app: Templates, Constructions, editing and saving, history, the glossary and exports.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html" aria-current="page">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>The browser app</h1>
+        <p class="lede">Browse and edit the same records as the command line.</p>
+<p>The browser app is a Template and Construction editor. It reads and writes the same records as the command line, with the same
+rules, so you can use either at any moment.</p>
+<h2 id="start">Start it <a class="anchor" href="#start" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree gui</code></pre>
+<p>It serves the barn you run it in on your own machine, on port 8082 or the next free one, and opens your browser. The page names the
+barn it is using. Stop it with Ctrl-C.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree gui --dry-run
+Barntree GUI for the barn at …/allotment at http://localhost:8082 (Ctrl-C to stop)
+/opt/homebrew/Cellar/php/8.5.12_1/bin/php -S localhost:8082 -t …/allotment/vendor/rmb32/barntree-gui/public …/allotment/vendor/rmb32/barntree-gui/public/index.php</code></pre>
+<p><code>--port=9000</code> is where to start looking for a free port, <code>--no-open</code> doesn’t open a browser, and
+<code>--dry-run</code> prints what would be started, as above. Outside any barn the page offers to make one in the folder it was
+started in, adding only <code>.barn/</code>.</p>
+<h2 id="catalogue">The catalogue <a class="anchor" href="#catalogue" aria-label="Link to this section">#</a></h2>
+<p>The left side lists <strong>Constructions</strong> first, each with the name of the Template it follows, then <strong>Templates</strong>,
+by name. Existing Template files appear at once; there is nothing to import. Select one and the sidebar becomes that thing’s own menu, with
+a back arrow to the catalogue. <strong>Help</strong> in the top bar explains the words and symbols: a square marks a leaf, stacked bars a list
+and a grid a map.</p>
+<h2 id="template">A Template <a class="anchor" href="#template" aria-label="Link to this section">#</a></h2>
+<figure><div class="shot"><div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Template</span></div><img src="../assets/screens/barntree-tpl-tree.webp" width="2560" height="1720" loading="lazy" alt="The Allotment Template open in the browser app. The sidebar offers Tree, Overview, Skeleton, History and Construct, then the types grouped as Maps, Lists and Leaves, then Types and Glossary. The main area shows the Template tree: the root Allotment with Beds, Compost, Greenhouse and Shed, and an Add child button."></div><figcaption>A Template’s Tree, with its types in the sidebar.</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th scope="col">Menu entry</th><th scope="col">What it shows</th></tr></thead><tbody><tr><td><strong>Tree</strong></td><td>What the Template allows, from the root down. Maps show their fixed children by name. A dashed <em>Each …</em> row shows what a list repeats. Select a row to open that type’s details; <strong>Back to tree</strong> restores where you were.</td></tr><tr><td><strong>Overview</strong></td><td>The name, description, what it starts with, and its size. <strong>View and export</strong> and <strong>Delete</strong> are here.</td></tr><tr><td><strong>Skeleton</strong></td><td>A read-only, fully expanded preview of the starting tree. It follows unsaved edits.</td></tr><tr><td><strong>History</strong></td><td>The Template’s revisions. See <a href="history.html">Revisions and history</a>.</td></tr><tr><td><strong>Construct</strong></td><td>Makes a Construction from the saved Template: a name, and a button.</td></tr><tr><td><strong>Maps, Lists, Leaves</strong></td><td>The types, by kind and sorted by identifier. <strong>+</strong> adds one; select one to see its meaning, tags and where it is used.</td></tr><tr><td><strong>Types</strong></td><td>Every type in one table, with what it holds. Filter to leaves, lists or maps; a row opens its details. Its address is shareable.</td></tr><tr><td><strong>Glossary</strong></td><td>Every type with its meaning, grouped by kind, so a newcomer can learn the subject’s words in one read. It shows only what you wrote.</td></tr></tbody></table></div>
+<figure><div class="shot"><div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Glossary</span></div><img src="../assets/screens/barntree-tpl-glossary.webp" width="2560" height="1720" loading="lazy" alt="The Glossary of the Allotment Template: cards for the four Leaves (Bed, Compost, Greenhouse, Shed), the one List (Beds, a list of Bed) and the one Map (Allotment, holding Beds, Compost, Greenhouse and Shed), each with its meaning."></div><figcaption>The Glossary of a Template.</figcaption></figure>
+<h3 id="editing">Editing and saving <a class="anchor" href="#editing" aria-label="Link to this section">#</a></h3>
+<p>Viewing has no Save button. <strong>Edit</strong> starts an explicit session, with a heading, <strong>Save</strong> and <strong>Cancel</strong>.
+Field changes, the × on a child and drag-and-drop all share one draft. Save checks it and records the whole session as one revision, then
+returns to viewing. Cancel restores the saved version. Leaving a changed session offers Save, Discard or Stay, and a failed save keeps your
+work and says why. A notice such as <em>Template saved</em> confirms a save.</p>
+<ul><li><strong>Add a type.</strong> <strong>+</strong> beside Maps, Lists or Leaves. Enter the name first; the identifier follows it until you edit the identifier yourself.</li><li><strong>Attach one.</strong> Drag a type’s six-dot grip onto a map to add a fixed child, or onto a dashed row to replace a list’s member type. <strong>Add child</strong> and <strong>Replace member type</strong> do the same by keyboard. A drop that isn’t valid changes nothing.</li><li><strong>Remove a connection.</strong> The × on a child removes the connection and keeps the type.</li><li><strong>Change what is shared.</strong> A type used in several places changes in all of them, so the app asks, and previews anything that would be lost.</li><li><strong>Create, rename, delete, construct.</strong> These finish at once, record a revision and show a notice, with no second Save. <strong>Delete</strong> appears on a type only when nothing uses it and it isn’t the root.</li></ul>
+<p>Tags are shown as pills beside a type. They are written in the Template’s file and are not edited in the app.</p>
+<h2 id="construction">A Construction <a class="anchor" href="#construction" aria-label="Link to this section">#</a></h2>
+<figure><div class="shot"><div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Construction</span></div><img src="../assets/screens/barntree-cs-tree.webp" width="2560" height="1040" loading="lazy" alt="A Construction called Plot 12, north end. Beds holds two members, Beans and Leeks, each of type Bed and tagged Watered, with a dashed Add Bed button. Compost and Shed follow."></div><figcaption>A Construction’s Tree: each member shows its name and the type it follows.</figcaption></figure>
+<ul><li><strong>Tree.</strong> The real members. <strong>+ Add</strong> on an eligible list asks for a name; the list’s captured type decides what is added. A member’s own page renames or removes it, and <strong>Back to tree</strong> restores the expanded branches.</li><li><strong>Overview.</strong> The Construction’s name and the exact revision of its source Template. The source link opens that revision read-only, without the live Template.</li><li><strong>History.</strong> Its own revisions.</li></ul>
+<p>Editing is a scoped session with <strong>Save</strong> and <strong>Cancel</strong>, as for a Template. A Construction has no drag-and-drop and
+no type editor: its required children and captured types are read-only.</p>
+<h2 id="export">View and export <a class="anchor" href="#export" aria-label="Link to this section">#</a></h2>
+<p><strong>View and export</strong>, under a Template’s Overview, asks you to resolve pending edits and then previews the saved tree as
+<em>Tree</em>, <em>Document</em>, <em>Folders</em> or <em>Diagram</em>. <a href="export.html">Read a Tree another way</a> covers each one.</p>
+<p>A Template also opens by address: <code>/?tree=Allotment</code>.</p>
+        <div class="docs-next"><a href="check.html">← Check the Templates</a><a href="cli.html">Command reference →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From PHP · Barntree</title>
+  <meta name="description" content="Use the Barntree library from PHP: build and edit a Tree, be refused, and make Templates and Constructions with their revisions.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html" aria-current="page">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>From PHP</h1>
+        <p class="lede">The library the command line and the browser app are built on.</p>
+<p>The library, <a href="https://packagist.org/packages/rmb32/barntree">rmb32/barntree</a>, is what the command line and the browser
+app are built on. Use it directly to build, edit and check Trees in your own code. The examples below were run as written, against the
+released package.</p>
+<pre><code>composer require rmb32/barntree</code></pre>
+<h2 id="tree">Build a Tree, edit it and be refused <a class="anchor" href="#tree" aria-label="Link to this section">#</a></h2>
+<p><code>TreeFactory</code> builds a Tree from a document, as PHP arrays. <code>TreeEditorFactory</code> edits one by the path of names to an
+item, and returns a new Tree. The one you passed in is unchanged.</p>
+<pre><code>&lt;?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Rmb32\Barntree\Api\Exception\Tree\DuplicateMemberNameException;
+use Rmb32\Barntree\Api\Factory\TextProjectorFactory;
+use Rmb32\Barntree\Api\Factory\TreeEditorFactory;
+use Rmb32\Barntree\Api\Factory\TreeFactory;
+use Rmb32\Barntree\Api\ValueObject\ItemName;
+use Rmb32\Barntree\Api\ValueObject\ItemPath;
+
+$tree = new TreeFactory()-&gt;create([
+    'formatVersion' =&gt; 1,
+    'name' =&gt; 'Allotment',
+    'description' =&gt; 'A plot of ground, rented to grow food on.',
+    'root' =&gt; 'Allotment',
+    'types' =&gt; [
+        'Allotment' =&gt; [
+            'name' =&gt; 'Allotment',
+            'meaning' =&gt; 'The whole plot.',
+            'kind' =&gt; 'map',
+            'of' =&gt; ['Beds', 'Shed'],
+        ],
+        'Beds' =&gt; [
+            'name' =&gt; 'Beds',
+            'meaning' =&gt; 'The raised beds.',
+            'kind' =&gt; 'list',
+            'of' =&gt; 'Bed',
+        ],
+        'Bed' =&gt; ['name' =&gt; 'Bed', 'meaning' =&gt; 'One raised bed.', 'kind' =&gt; 'leaf'],
+        'Shed' =&gt; ['name' =&gt; 'Shed', 'meaning' =&gt; 'Where the tools are kept.', 'kind' =&gt; 'leaf'],
+    ],
+]);
+
+$editor = new TreeEditorFactory()-&gt;create();
+$beds = new ItemPath('Beds');
+$tree = $editor-&gt;addMember($tree, $beds, new ItemName('Beans'));
+$tree = $editor-&gt;addMember($tree, $beds, new ItemName('Leeks'));
+
+echo new TextProjectorFactory()-&gt;create()-&gt;project($tree), PHP_EOL;
+
+try {
+    $editor-&gt;addMember($tree, $beds, new ItemName('Beans'));
+} catch (DuplicateMemberNameException $e) {
+    echo 'Refused: a second ', $e-&gt;name, PHP_EOL;
+}
+
+echo 'Beans is item ', $tree-&gt;find(new ItemPath('Beds', 'Beans'))-&gt;id(), PHP_EOL;</code></pre>
+<pre><code>Allotment
+|
++--Beds
+   |
+   +--Beans
+   +--Leeks
++--Shed
+
+Refused: a second Beans
+Beans is item afdf58a93cb2a8e6</code></pre>
+<p>The editor’s operations:</p>
+<ul><li><code>addMember($tree, $list, $name)</code> adds a member to the list item at <code>$list</code>, with its own skeleton.</li><li><code>removeMember($tree, $member)</code> removes a member and everything below it.</li><li><code>renameMember($tree, $member, $name)</code> renames a list member, keeping its id, kind and children.</li><li><code>changeTypes($tree, $root, $types)</code> gives the Tree new types and fits its tree to them. Compare the trees before and after to see what would be dropped, and keep the result only if that is what you want.</li><li><code>$tree->find($path)</code> returns the item at a path, and <code>new ItemPath()</code> is the root.</li></ul>
+<h2 id="refusals">Refusals <a class="anchor" href="#refusals" aria-label="Link to this section">#</a></h2>
+<p>A document that doesn’t fit the shape is refused with one <code>TreeNotWellFormedException</code>, whose <code>faults</code> lists every problem at once, each with
+the path that caused it. A document that fits the shape but breaks a rule, or an edit that would, is refused with the exception for that rule.
+Each extends <code>TreeException</code>, is checked, and carries what it is about as public read-only properties, as <code>$e->name</code> above.</p>
+<h2 id="revisions">Templates and Constructions <a class="anchor" href="#revisions" aria-label="Link to this section">#</a></h2>
+<p><code>TemplateHistoryStoreFactory</code> keeps Templates and their revisions in a barn. <code>RevisionWorkspaceFactory</code> makes and saves
+Constructions. Both open a barn from <code>BarnPaths::at()</code> with <code>forBarn()</code>. This script reads the Allotment Template and makes a
+Construction from it:</p>
+<pre><code>&lt;?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Rmb32\Barntree\Api\Factory\RevisionWorkspaceFactory;
+use Rmb32\Barntree\Api\Factory\TemplateHistoryStoreFactory;
+use Rmb32\Barntree\Api\Factory\TreeFactory;
+use Rmb32\Barntree\Api\ValueObject\DocumentKind;
+use Rmb32\BarnPaths\Api\ValueObject\BarnPaths;
+
+$paths = BarnPaths::at($argv[1]);
+$templates = new TemplateHistoryStoreFactory()-&gt;forBarn($paths);
+$workspace = new RevisionWorkspaceFactory()-&gt;forBarn($paths);
+
+$checkout = $templates-&gt;checkout('Allotment');
+echo 'Template: revision ', $checkout-&gt;revision-&gt;number, PHP_EOL;
+
+$draft = $workspace-&gt;newConstruction($checkout-&gt;revision-&gt;documentId, 'Plot 14');
+$saved = $workspace-&gt;save($draft);
+echo 'Plot 14: revision ', $saved-&gt;number, ', made from revision ', $saved-&gt;source-&gt;number, PHP_EOL;
+
+foreach ($workspace-&gt;history(DocumentKind::Construction, $saved-&gt;documentId) as $revision) {
+    echo '  revision ', $revision-&gt;number, ': ', $revision-&gt;reason === '' ? '(no reason)' : $revision-&gt;reason, PHP_EOL;
+}</code></pre>
+<pre><code>Template: revision 1
+Plot 14: revision 1, made from revision 1
+  revision 1: (no reason)</code></pre>
+<p>Starting and editing a draft writes nothing. Edit its content with the same editor, pass the result to
+<code>draft->withContent($edited)</code>, and call <code>save()</code> when ready. A stale base is refused instead of overwriting a newer save. A save can carry a
+reason, <code>saveTemplate($name, $content, $token, 'Why')</code>, which the revision returns as <code>reason</code>. The app and the command line
+don’t set or show it.</p>
+<p><code>inDirectory('/my/folder')</code> on either factory keeps a catalogue apart from the barn’s.
+<code>TemplateHistoryStoreFactory::lockFiles()</code> lists the lock files a catalogue writes, as patterns relative to its folder, so you can keep them out of
+version control.</p>
+<h2 id="projections">Projections <a class="anchor" href="#projections" aria-label="Link to this section">#</a></h2>
+<p>A projector turns a Tree into text without touching the disk. <code>ProjectorRegistryFactory</code> holds the four built in, as <code>text</code>,
+<code>markdown</code>, <code>folder</code> and <code>mermaid</code>, in that order, and <code>with()</code> adds your own. A projector you register appears
+in the app with no change to it.</p>
+<h2 id="stores">Stores <a class="anchor" href="#stores" aria-label="Link to this section">#</a></h2>
+<p><code>TreeStoreFactory</code> gives a store over one directory of <code>.barntree.json</code> files, found by the <code>name</code> inside each file, not
+by where they are. It offers <code>names()</code>, <code>has()</code>, <code>read()</code>, <code>write()</code> and <code>delete()</code>. With
+<code>writable: false</code> it refuses to write, which is how a shipped catalogue is read.</p>
+<h2 id="examples">More examples <a class="anchor" href="#examples" aria-label="Link to this section">#</a></h2>
+<p>The package carries runnable examples in its <code>examples/</code> folder, each with the output it prints: <code>quickstart</code>,
+<code>house</code>, <code>projections</code>, <code>refusals</code> and <code>revisions</code>.</p>
+        <div class="docs-next"><a href="cli.html">← Command reference</a><a href="install.html">Installation →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

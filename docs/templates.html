@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keep a Template · Barntree</title>
+  <meta name="description" content="Create a Barntree Template, look at it, change its types, copy it, rename it and delete it.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html" aria-current="page">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Keep a Template</h1>
+        <p class="lede">The rules of a subject, kept in your project.</p>
+<p>A <a href="glossary.html#template">Template</a> is a Tree kept in your project, to make Constructions from. It lives in one file, named
+after it, in <code>.barn/barntree/trees/</code>, and it is the same file whether you work in the browser app or on the command line.</p>
+<h2 id="create">Make one <a class="anchor" href="#create" aria-label="Link to this section">#</a></h2>
+<h3 id="from-file">From a file <a class="anchor" href="#from-file" aria-label="Link to this section">#</a></h3>
+<p>Write the Template as JSON, with the types and nothing else needed (the <a href="data.html#document">document</a> page has the
+shape), and give it to Barntree. <code>--from-file=-</code> reads it from standard input.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:create --from-file=allotment.json
+Saved: Allotment</code></pre>
+<p>Barntree builds the skeleton, saves the file as <code>Allotment.barntree.json</code> and records its first revision. A file that breaks a rule is refused, and nothing is saved.</p>
+<h3 id="in-the-app">In the browser app <a class="anchor" href="#in-the-app" aria-label="Link to this section">#</a></h3>
+<p>Choose <strong>+</strong> beside <em>Templates</em>, give it a name and a description, and add types one at a time. Nothing is written until you save.</p>
+<h2 id="show">Look at it <a class="anchor" href="#show" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:list
+Barn: …/allotment
++-----------+----------------------------------+----------+-----------------+
+| Name      | Document ID                      | Revision | Source Template |
++-----------+----------------------------------+----------+-----------------+
+| Allotment | bd3708f38810ec991ef9a2470b5abe52 | 1        |                 |
++-----------+----------------------------------+----------+-----------------+</code></pre>
+<p><code>template:show</code> has several views:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col"><code>--view=</code></th><th scope="col">What you get</th></tr></thead><tbody><tr><td><code>tree</code> (the default)</td><td>The tree of types from the root down, with the member type under each list.</td></tr><tr><td><code>overview</code></td><td>The name, description, root and how many types and items.</td></tr><tr><td><code>skeleton</code></td><td>The starting tree: required map children, and empty lists.</td></tr><tr><td><code>types</code></td><td>Every type, grouped by kind and sorted by identifier, with where it is used and its item ids.</td></tr><tr><td><code>glossary</code></td><td>The same, with the meanings and the declared tags.</td></tr></tbody></table></div>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:show Allotment --view=overview
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+File token: 5f075e17e9f96751d733594974e8696b748ec2aeafa09d1342c5a0f819e70106
+name: Allotment
+description: A plot of ground, rented to grow food on.
+root: Allotment
+types: 5
+items: 4</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:show Allotment --view=glossary
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+File token: 5f075e17e9f96751d733594974e8696b748ec2aeafa09d1342c5a0f819e70106
+types:
+  0:
+    identifier: Allotment
+    name: Allotment
+    meaning: The whole plot, from the gate to the far fence.
+    kind: map
+    of:
+      0: Beds
+      1: Compost
+      2: Shed
+  …</code></pre>
+<p>Both use <code>--json</code> for scripts. The whole Template is in the JSON as <code>content</code>.</p>
+<h2 id="change">Change it <a class="anchor" href="#change" aria-label="Link to this section">#</a></h2>
+<p>Changes are made a step at a time. Each one is saved at once, as one <a href="history.html">revision</a>, and a change that
+alters nothing records none.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:edit Allotment --description="A plot of ground, rented to grow food on, with a path to every bed."
+Saved: Allotment</code></pre>
+<p>Add a type. It starts <em>unattached</em>: it exists, and nothing holds it yet. Its identifier defaults to its name; <code>--identifier</code> chooses another.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree type:create Allotment --kind=leaf --name="Greenhouse" --meaning="Where seedlings start."
+Saved: Allotment</code></pre>
+<p>Attach it to the map that should hold it. A change to the structure is previewed and needs <code>--yes</code>, or a reply to a prompt, to go ahead.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree map:add-child Allotment Allotment Greenhouse --yes
+Changed structure: Allotment
+Saved: Allotment</code></pre>
+<div class="table-wrap"><table><thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>type:create</code></td><td>Makes a leaf, a list (<code>--of=IDENTIFIER</code> for its member type) or a map (<code>--of=A,B</code> for its children). Unattached.</td></tr><tr><td><code>type:edit</code></td><td>Changes a type’s name, meaning, kind or <code>of</code>, never its identifier. A meaning can run to several paragraphs.</td></tr><tr><td><code>map:add-child</code>, <code>map:remove-child</code></td><td>Connects a type to a map, or removes the connection and keeps the type.</td></tr><tr><td><code>list:set-member-type</code></td><td>Chooses the one type a list holds.</td></tr><tr><td><code>type:delete</code></td><td>Deletes a type that nothing uses and that isn’t the root.</td></tr><tr><td><code>template:edit</code></td><td>Changes the name, the description or the root.</td></tr><tr><td><code>template:apply</code></td><td>Applies a JSON file of metadata and types as one change. See <a href="cli.html">the command reference</a>.</td></tr></tbody></table></div>
+<p>A type that something still uses can’t be deleted:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree type:delete Allotment Bed --yes
+This building block is still used.</code></pre>
+<h3 id="fit">When the tree has to follow <a class="anchor" href="#fit" aria-label="Link to this section">#</a></h3>
+<p>Changing types fits the saved tree to them. An item whose type is still the one expected where it sits is kept, with its id and
+name. A map entry the new types call for is built, with its own skeleton. A member whose type its list no longer holds, and an entry
+whose type has left its map, are <strong>dropped</strong> with everything below them. Barntree decides nothing for you: it previews
+every item that would go, and asks. Changing the root is the plainest case:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:edit "Winter beds" --root=Beds
+Removed item: Allotment [597dd7eb43ec0363]
+Removed item: Beds [615e4cd5d3ff2f65]
+Removed item: Compost [a12966e1826a8712]
+Removed item: Shed [201774b572c32cbc]
+Removed item: Greenhouse [a1260f2a203b1704]
+Changed root: Allotment to Beds
+This change needs confirmation. Use --yes to confirm.</code></pre>
+<p>Nothing was saved. Repeat the command with <code>--yes</code> to keep that result, or don’t. Unattended use always needs <code>--yes</code>, and <code>--yes</code> never skips validation or the conflict check.</p>
+<h2 id="copy">Copy, rename and delete <a class="anchor" href="#copy" aria-label="Link to this section">#</a></h2>
+<p>A copy gets fresh identity and its own history, and keeps the saved members and tags. The name can’t be one a Template
+already has.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:copy Allotment "Winter plot"
+Saved: Winter plot</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:edit "Winter plot" --name="Winter beds"
+Saved: Winter beds</code></pre>
+<p>Renaming keeps the identity, the file’s place and the history. Deleting a Template asks first:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:delete Allotment
+Delete Template: Allotment
+This change needs confirmation. Use --yes to confirm.</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:delete "Winter beds" --yes
+Delete Template: Winter beds
+Deleted: Winter beds</code></pre>
+<p>A deleted Template’s revisions are kept, and so is every Construction made from it: each holds its own copy of the types,
+so deleting the Template can’t break one.</p>
+<h2 id="conflicts">Changing a Template from two places <a class="anchor" href="#conflicts" aria-label="Link to this section">#</a></h2>
+<p>Every save compares the Template’s file with the state you based your change on, and refuses to overwrite newer work. To base
+a change on what you inspected, give <code>--expect-token=TOKEN</code>, using the <em>File token</em> that <code>template:show</code>
+prints. If the file was changed outside Barntree, open it in the app, or save it through a command, before changing it further: the
+save records what was there first.</p>
+        <div class="docs-next"><a href="trees.html">← Trees: types and items</a><a href="constructions.html">Make a Construction →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

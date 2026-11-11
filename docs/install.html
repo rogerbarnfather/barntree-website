@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation · Barntree</title>
+  <meta name="description" content="Install Barntree with Composer, what each package provides, and how to make a barn.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html" aria-current="page">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Installation</h1>
+        <p class="lede">Three Composer packages and a folder.</p>
+<h2 id="requirements">Requirements <a class="anchor" href="#requirements" aria-label="Link to this section">#</a></h2>
+<ul><li>PHP 8.5 or later</li><li>the <a href="https://pecl.php.net/package/ds"><code>ds</code></a> extension, 2.0 or later</li><li>the <code>mbstring</code> extension</li><li>Composer</li></ul>
+<p>Barntree needs PHP to run. It asks nothing of the language of the thing a Tree is about.</p>
+<h2 id="packages">Packages <a class="anchor" href="#packages" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Package</th><th scope="col">What it gives you</th></tr></thead><tbody><tr><td><a href="https://packagist.org/packages/rmb32/barntree">rmb32/barntree</a></td><td>The library: Trees, Templates, Constructions, revisions and projections.</td></tr><tr><td><a href="https://packagist.org/packages/rmb32/barntree-cli">rmb32/barntree-cli</a></td><td>The <code>barntree</code> command. It installs the library with it.</td></tr><tr><td><a href="https://packagist.org/packages/rmb32/barntree-gui">rmb32/barntree-gui</a></td><td>The browser app, which <code>barntree gui</code> starts.</td></tr></tbody></table></div>
+<pre><code><span class="p">$ </span>composer require --dev rmb32/barntree-cli rmb32/barntree-gui</code></pre>
+<p>Without the browser app installed, <code>gui</code> simply isn’t offered. To use only the library from your own code:</p>
+<pre><code><span class="p">$ </span>composer require rmb32/barntree</code></pre>
+<h2 id="barn">Make a barn <a class="anchor" href="#barn" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree init
+Made a barn: …/allotment
+Trees live in: …/allotment/.barn/barntree/trees</code></pre>
+<p>Run from a folder inside another barn, <code>init</code> names that barn and asks before making a separate one. With
+<code>--no-interaction</code> it refuses, unless <code>--separate-barn</code> says to go ahead.</p>
+<h2 id="no-barn">Without a barn <a class="anchor" href="#no-barn" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:list
+No barn found. Run barntree init to make one.</code></pre>
+<p>Commands that read or change a barn refuse outside one, write nothing and exit with 1. The browser app offers to make one in the browser.</p>
+        <div class="docs-next"><a href="php.html">← From PHP</a><a href="data.html">Where your data lives →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction · Barntree</title>
+  <meta name="description" content="Barntree keeps a tree of things valid against the types it may hold, as reusable Templates and the Constructions made from them, with a history of every saved change.">
+  <link rel="icon" href="assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/base/base.css">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="philosophy.html">Philosophy</a></li>
+          <li><a href="quick-start.html">Quick start</a></li>
+          <li><a href="docs/index.html">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow">Barntree</span>
+        <h1>Say what goes where, and keep it <span class="accent">valid</span>.</h1>
+        <p class="lede">Barntree keeps a tree of things that follows the kinds of thing it may hold. Write the types once, in words anyone can read, and make as many real trees from them as you need. A change that would break the rules is refused.</p>
+        <div class="actions">
+          <a class="btn" href="quick-start.html">Quick start</a>
+          <a class="btn ghost" href="philosophy.html">Why it works this way</a>
+        </div>
+        <aside class="callout note maturity">
+          <p><strong>Note.</strong> Barntree is early software (version 0.x) and not ready for real projects yet. The minor version is the one that breaks.</p>
+        </aside>
+      </div>
+      <div class="wrap wide hero-shot">
+        <figure class="shot">
+          <div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Template</span></div>
+          <img src="assets/screens/barntree-tpl-tree.webp" width="2560" height="1720" alt="The Barntree browser app showing a Template called Allotment. Its tree has the root, Allotment, holding Beds, Compost, Greenhouse and Shed. The sidebar offers Tree, Overview, Skeleton, History and Construct, and lists the Template’s types as one map, one list and four leaves.">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="feature stacked" id="types">
+          <div>
+            <div class="copy-head">
+              <span class="kicker">Meaning first</span>
+              <h2>Types that explain themselves.</h2>
+            </div>
+            <div>
+              <p>A Template names the types of thing in one subject. Each has a name and a meaning written in plain words. A type is a <strong>leaf</strong>, which holds nothing, a <strong>list</strong> of one type, or a <strong>map</strong> of several. An allotment is a map of beds, a compost heap and a shed; the beds are a list, and each bed is a leaf.</p>
+              <p>Months later, anyone can open the tree and understand not just what exists but what each thing is for.</p>
+            </div>
+          </div>
+          <figure>
+            <div class="shot">
+              <div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Glossary</span></div>
+              <img src="assets/screens/barntree-tpl-glossary.webp" width="2560" height="1720" loading="lazy" alt="The Glossary of the Allotment Template. Leaves, Lists and Maps are grouped as cards, each with the meaning that was written for it: Bed, One raised bed; Beds, a list of Bed; Allotment, the whole plot, holding Beds, Compost, Greenhouse and Shed.">
+            </div>
+            <figcaption>A Template’s glossary: every type, with the meaning that was written for it.</figcaption>
+          </figure>
+        </div>
+
+        <div class="feature flip" id="valid">
+          <div>
+            <span class="kicker">Always valid</span>
+            <h2>A change that would break it is refused.</h2>
+            <p>Barntree builds the tree from the types and keeps it in line with them. It is never left half-broken: a type nobody has described, a map that holds itself forever, two members of one list with the same name, or a member added where there is no list is refused, with a message that says why.</p>
+            <p>A file that was broken outside Barntree fails loudly when it is read, and says what is wrong.</p>
+          </div>
+          <div class="panel" role="figure" aria-label="Two refused changes">
+            <span class="stamp">Refused</span>
+<pre class="tree"><span class="d">$ </span>barntree member:add … --name="Beans"
+List item 'dc06e11b23467d1a' has two members named 'Beans'.
+
+<span class="d">$ </span>barntree member:add … --list=&lt;Compost’s id&gt; --name="X"
+The item at 'Compost' follows 'Compost', a leaf, so it can't hold members: only a list item can.</pre>
+            <p class="terms-note">Nothing was changed by either command.</p>
+          </div>
+        </div>
+
+        <div class="feature stacked" id="constructions">
+          <div>
+            <div class="copy-head">
+              <span class="kicker">Real members</span>
+              <h2>One Template. Independent Constructions.</h2>
+            </div>
+            <div>
+              <p>A <strong>Construction</strong> is a named tree of real members made from a Template. Its required children are made for you and its lists start empty. Add a bed to the plot and name it.</p>
+              <p>Plot 12 can have beans and leeks while another plot has different beds. Each Construction keeps the exact Template revision it started from, so later changes to the Template leave it intact.</p>
+            </div>
+          </div>
+          <figure>
+            <div class="shot">
+              <div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Construction</span></div>
+              <img src="assets/screens/barntree-cs-tree.webp" width="2560" height="1040" loading="lazy" alt="A Construction called Plot 12, north end. Its tree shows the Allotment root with Beds holding two members, Beans and Leeks, each of type Bed and tagged Watered, and a dashed Add Bed button. Compost and Shed follow.">
+            </div>
+            <figcaption>A Construction: each member shows its name and the type it follows.</figcaption>
+          </figure>
+        </div>
+
+        <div class="feature stacked" id="history">
+          <div>
+            <div class="copy-head">
+              <span class="kicker">A record of change</span>
+              <h2>History belongs to each thing.</h2>
+            </div>
+            <div>
+              <p>Templates and Constructions each have their own history, newest revision first. Each explicit save is one revision, and a save that changes nothing records nothing. Open a revision to read it exactly as it was.</p>
+              <p>Restoring an earlier revision is not part of this version.</p>
+            </div>
+          </div>
+          <figure>
+            <div class="shot">
+              <div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · History</span></div>
+              <img src="assets/screens/barntree-cs-history.webp" width="2560" height="1500" loading="lazy" alt="The History of the Construction Plot 12, north end: seven revisions, newest first, from Construction created, through members added, renamed and deleted, to Construction renamed. The newest is marked Current.">
+            </div>
+            <figcaption>Every change to a Construction, with when it was recorded and what it was.</figcaption>
+          </figure>
+        </div>
+
+        <div class="feature" id="realise">
+          <div>
+            <span class="kicker">Realise it any way</span>
+            <h2>One model. Any shape.</h2>
+            <p>Barntree never decides what a tree becomes. Export a Template as a tree, a document, a diagram or a set of folders with a README in each. Each is one way to show it, never the Tree itself.</p>
+          </div>
+          <div class="panel" role="figure" aria-label="A Template as a tree">
+            <span class="stamp">Tree</span>
+<pre class="tree">Allotment
+|
++--Beds
++--Compost [Watered]
++--Greenhouse
++--Shed</pre>
+            <p class="terms-note">The text projection of the Allotment Template. Tags show after a name.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="ways-in">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="kicker">Where next</span>
+          <h2>Three ways in.</h2>
+        </div>
+        <div class="grid three ways">
+          <a class="card" href="quick-start.html"><h3>Quick start</h3><p>Install Barntree, write a Template, make a Construction and read its history.</p><span class="more">Start here</span></a>
+          <a class="card" href="philosophy.html"><h3>Philosophy</h3><p>Why meaning comes first, and why nothing is rewritten or repaired behind your back.</p><span class="more">Read why</span></a>
+          <a class="card" href="docs/index.html"><h3>Documentation</h3><p>Trees, Templates, Constructions, the browser app, the command line and the glossary, task by task.</p><span class="more">Browse the documentation</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="in-barn">Used in Barn: in a <a href="https://rogerbarnfather.github.io/barn-website/barn.html">barn</a>, Barntree keeps its records beside the project’s other records. It works on its own too.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="index.html" aria-current="page">Introduction</a>
+        <a href="philosophy.html">Philosophy</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="docs/index.html">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

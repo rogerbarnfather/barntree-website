@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation · Barntree</title>
+  <meta name="description" content="Documentation for Barntree: Trees, Templates, Constructions, the browser app, the command line, PHP and the glossary.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html" aria-current="page">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Documentation</h1>
+        <p class="lede">Everything Barntree does, task by task.</p>
+<p>Barntree keeps a tree of things that follows the kinds of thing it may hold. You say what <em>types</em> of thing a
+subject has, and Barntree builds the tree from them and refuses any edit that would break the rules. A Tree can be about anything:
+the layers of a system, the rooms of a house, the modules of a course or the courses of a dinner. It is kept as plain JSON, so any
+language can read it.</p>
+<h2 id="the-idea">The idea in five words <a class="anchor" href="#the-idea" aria-label="Link to this section">#</a></h2>
+<ul><li><strong>Tree.</strong> The types of one subject, and the tree of items that follows them. Every example in this documentation is an allotment.</li><li><strong>Template.</strong> A Tree kept in your project, to make Constructions from. It is the rules, and its skeleton.</li><li><strong>Construction.</strong> A named tree of real members, made from a Template. It keeps the revision it started from.</li><li><strong>Revision.</strong> One saved state of a Template or a Construction. None is ever changed.</li><li><strong>Projection.</strong> A Tree shown another way: as text, a document, folders or a diagram.</li></ul>
+<h2 id="find">Find what you need <a class="anchor" href="#find" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">I want to…</th><th scope="col">Go to</th></tr></thead><tbody><tr><td>Understand types, leaves, lists and maps, and the tree that follows them</td><td><a href="trees.html">Trees: types and items</a></td></tr><tr><td>Write a Template, change its types, copy it or delete it</td><td><a href="templates.html">Keep a Template</a></td></tr><tr><td>Add real members to a tree of my own</td><td><a href="constructions.html">Make a Construction</a></td></tr><tr><td>See what changed, or read an earlier state</td><td><a href="history.html">Revisions and history</a></td></tr><tr><td>Get a document, folders or a diagram out of a Template</td><td><a href="export.html">Read a Tree another way</a></td></tr><tr><td>Check that every Template keeps its rules, in a build</td><td><a href="check.html">Check the Templates</a></td></tr><tr><td>Work in a browser</td><td><a href="gui.html">The browser app</a></td></tr><tr><td>Script it</td><td><a href="cli.html">Command reference</a></td></tr><tr><td>Use it from PHP</td><td><a href="php.html">From PHP</a></td></tr><tr><td>Install it, or find its files</td><td><a href="install.html">Installation</a> and <a href="data.html">Where your data lives</a></td></tr><tr><td>Look up a word, or a message</td><td><a href="glossary.html">Glossary</a> and <a href="troubleshooting.html">When something goes wrong</a></td></tr></tbody></table></div>
+<p>New here? Do the <a href="../quick-start.html">quick start</a> first. It takes about ten minutes.</p>
+<p class="in-barn-left">Used in Barn: in a <a href="https://rogerbarnfather.github.io/barn-website/barn.html">barn</a>, Barntree keeps its records in <code>.barn/barntree/</code>. <code>barntree init</code> makes any project a barn so Barntree can work on its own.</p>
+        <div class="docs-next"><span></span><a href="trees.html">Trees: types and items →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

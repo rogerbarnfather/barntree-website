@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quick start · Barntree</title>
+  <meta name="description" content="Install Barntree, write a Template, make a Construction from it, add members and read its history.">
+  <link rel="icon" href="assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/base/base.css">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="philosophy.html">Philosophy</a></li>
+          <li><a href="quick-start.html" aria-current="page">Quick start</a></li>
+          <li><a href="docs/index.html">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="wrap prose">
+        <h1>Quick start</h1>
+        <p class="lede">From an empty project to a Template and a Construction that follows it.</p>
+<p>You need PHP 8.5 or later with the <code>ds</code> and <code>mbstring</code> extensions, and Composer. Every command
+on this page was run in a new folder, with an allotment as the example, and the output shown is what it printed. It takes about
+ten minutes.</p>
+<h2 id="install">Install <a class="anchor" href="#install" aria-label="Link to this section">#</a></h2>
+<p>Barntree is a few Composer packages. <a href="https://packagist.org/packages/rmb32/barntree-cli">barntree-cli</a>
+provides the <code>vendor/bin/barntree</code> command and brings the library, <a href="https://packagist.org/packages/rmb32/barntree">barntree</a>,
+with it. <a href="https://packagist.org/packages/rmb32/barntree-gui">barntree-gui</a> adds the browser app. From your project’s root:</p>
+<pre><code><span class="p">$ </span>composer require --dev rmb32/barntree-cli rmb32/barntree-gui</code></pre>
+<h2 id="make-a-barn">Make a barn <a class="anchor" href="#make-a-barn" aria-label="Link to this section">#</a></h2>
+<p>Barntree keeps its records in a folder called <code>.barn/</code> at the root of the project. <code>init</code> makes it.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree init
+Made a barn: …/allotment
+Trees live in: …/allotment/.barn/barntree/trees</code></pre>
+<p>Commit <code>.barn/</code> with the rest of the project. Barntree finds it from any folder inside the project, and refuses to work outside one.</p>
+<h2 id="template">Write a Template <a class="anchor" href="#template" aria-label="Link to this section">#</a></h2>
+<p>A <a href="docs/glossary.html#template">Template</a> says what <em>types</em> of thing there are in one subject. This one is
+an allotment: a plot that holds beds, a compost heap and a shed. A bed is a leaf, which holds nothing; the beds are a list of
+beds; the plot itself is a map of the three things it holds. Save this as <code>allotment.json</code>:</p>
+<pre><code>{
+    "formatVersion": 1,
+    "name": "Allotment",
+    "description": "A plot of ground, rented to grow food on.",
+    "root": "Allotment",
+    "types": {
+        "Allotment": {
+            "name": "Allotment",
+            "meaning": "The whole plot, from the gate to the far fence.",
+            "kind": "map",
+            "of": [
+                "Beds",
+                "Compost",
+                "Shed"
+            ]
+        },
+        "Beds": {
+            "name": "Beds",
+            "meaning": "The raised beds, each growing one crop at a time.",
+            "kind": "list",
+            "of": "Bed"
+        },
+        "Bed": {
+            "name": "Bed",
+            "meaning": "One raised bed.",
+            "kind": "leaf",
+            "tags": [
+                "Watered"
+            ]
+        },
+        "Compost": {
+            "name": "Compost",
+            "meaning": "Where waste becomes next year's soil.",
+            "kind": "leaf",
+            "tags": [
+                "Watered"
+            ]
+        },
+        "Shed": {
+            "name": "Shed",
+            "meaning": "Where the tools are kept dry.",
+            "kind": "leaf"
+        }
+    },
+    "tags": {
+        "Watered": {
+            "meaning": "Needs watering in dry weather."
+        }
+    }
+}</code></pre>
+<p>Then give it to Barntree:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:create --from-file=allotment.json
+Saved: Allotment</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:list
+Barn: …/allotment
++-----------+----------------------------------+----------+-----------------+
+| Name      | Document ID                      | Revision | Source Template |
++-----------+----------------------------------+----------+-----------------+
+| Allotment | bd3708f38810ec991ef9a2470b5abe52 | 1        |                 |
++-----------+----------------------------------+----------+-----------------+</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:show Allotment
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+File token: 5f075e17e9f96751d733594974e8696b748ec2aeafa09d1342c5a0f819e70106
+Allotment [Allotment, map]
+  Beds [Beds, list]
+    Bed [Bed, leaf]
+  Compost [Compost, leaf]
+  Shed [Shed, leaf]</code></pre>
+<p>The tree has no <em>Bed</em> under <em>Beds</em> yet. A list starts empty, and holds the members you add to it
+later. <a href="docs/trees.html">Trees: types and items</a> explains how.</p>
+<h2 id="check">Check it <a class="anchor" href="#check" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree check
+Barn: …/allotment
+Checking the trees in …/allotment/.barn/barntree/trees
+Allotment: valid</code></pre>
+<p>The check reads every Template in the project and says whether each keeps its rules. It exits with status 1 when any does not, so it can run in a build.</p>
+<h2 id="construction">Make a Construction <a class="anchor" href="#construction" aria-label="Link to this section">#</a></h2>
+<p>A Template is the rules. A <a href="docs/glossary.html#construction">Construction</a> is one real thing that follows them:
+a particular plot, with its own beds. It starts from the Template’s skeleton, the plot, its compost heap and its shed, with the beds empty.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:create Allotment --name="Plot 12"
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 1 (3ead1efb447667fabc3edc3520dc4d39)
+Barn: …/allotment</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:show 3207a1c11fb74907574c9158b2fa812f
+Plot 12
+Revision: 1 (3ead1efb447667fabc3edc3520dc4d39)
+Allotment [Allotment, map] id=a6613e89bc389b77
+  Beds [Beds, list] id=dc06e11b23467d1a
+  Compost [Compost, leaf] id=2b278038cbdda93e
+  Shed [Shed, leaf] id=c3c827fbf214f947</code></pre>
+<p>The <code>id=</code> on each line is how you point at an item. Add two beds to the <em>Beds</em> list, using its id.
+Each change is saved at once, as a new revision:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name="Beans"
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 2 (372bbb6fad1f6bde9869042c7fcfcb29)
+Barn: …/allotment</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name="Carrots"
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 3 (f3d1bd75b615327c68370767096738d8)
+Barn: …/allotment</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:show 3207a1c11fb74907574c9158b2fa812f
+Plot 12
+Revision: 3 (f3d1bd75b615327c68370767096738d8)
+Allotment [Allotment, map] id=a6613e89bc389b77
+  Beds [Beds, list] id=dc06e11b23467d1a
+    Beans [Bed, leaf] id=67186afc688414fe
+    Carrots [Bed, leaf] id=7c49afd08c65dd98
+  Compost [Compost, leaf] id=2b278038cbdda93e
+  Shed [Shed, leaf] id=c3c827fbf214f947</code></pre>
+<h2 id="refused">Be refused <a class="anchor" href="#refused" aria-label="Link to this section">#</a></h2>
+<p>Barntree will not keep a tree that breaks the Template’s rules. Two beds of one list can’t share a name:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name="Beans"
+List item 'dc06e11b23467d1a' has two members named 'Beans'.</code></pre>
+<h2 id="history">See what changed <a class="anchor" href="#history" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:history 3207a1c11fb74907574c9158b2fa812f
++----------+----------------------------------+----------------------------------+----------------------+----------------------------+
+| Revision | GUID                             | Recorded at                      | Event                | Identifier                 |
++----------+----------------------------------+----------------------------------+----------------------+----------------------------+
+| 5        | 99459a8719ba0fb2f78c9342ba13a818 | 2026-11-11T16:21:25.484955+00:00 | Member deleted       | Bed — Courgettes           |
+| 4        | 774a0ce3377400ef1a4a0d2edd23c570 | 2026-11-11T16:21:25.216984+00:00 | Member renamed       | Bed — Carrots → Courgettes |
+| 3        | f3d1bd75b615327c68370767096738d8 | 2026-11-11T16:21:24.809730+00:00 | Member added         | Bed — Carrots              |
+| 2        | 372bbb6fad1f6bde9869042c7fcfcb29 | 2026-11-11T16:21:24.672595+00:00 | Member added         | Bed — Beans                |
+…</code></pre>
+<p>The full table lists every revision, newest first, with the date and what changed. <a href="docs/history.html">Revisions and history</a> explains them.</p>
+<h2 id="export">Read it another way <a class="anchor" href="#export" aria-label="Link to this section">#</a></h2>
+<p>A Template can be shown as a tree, a document, a Mermaid diagram, or folders. A folder export without <code>--to</code>
+writes nothing and shows what it would make:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=folder
+Allotment/
+├── README.md
+├── Beds/
+│   └── README.md
+├── Compost/
+│   └── README.md
+└── Shed/
+    └── README.md</code></pre>
+<h2 id="open-the-browser-app">Open the browser app <a class="anchor" href="#open-the-browser-app" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree gui</code></pre>
+<p>This serves the barn on your own machine and opens it in your browser, on port 8082 or the next free one. Stop it with
+Ctrl-C. Your Constructions and Templates are listed on the left. The <a href="docs/gui.html">browser app</a> page covers the rest.</p>
+<h2 id="where-next">Where next <a class="anchor" href="#where-next" aria-label="Link to this section">#</a></h2>
+<ul><li><a href="docs/trees.html">Trees: types and items</a>: the three kinds of type, and how a tree follows them.</li><li><a href="docs/templates.html">Keep a Template</a>: change types, copy a Template, delete one.</li><li><a href="docs/constructions.html">Make a Construction</a>: add, rename and remove members.</li><li><a href="philosophy.html">Philosophy</a>: why a Tree is never repaired for you, and why history is kept.</li></ul>
+<p class="in-barn-left">Used in Barn: in a <a href="https://rogerbarnfather.github.io/barn-website/barn.html">barn</a>, Barntree keeps its records in <code>.barn/barntree/</code>. <code>barntree init</code> makes any project a barn so Barntree can work on its own.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="index.html">Introduction</a>
+        <a href="philosophy.html">Philosophy</a>
+        <a href="quick-start.html" aria-current="page">Quick start</a>
+        <a href="docs/index.html">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

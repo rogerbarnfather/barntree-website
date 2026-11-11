@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Read a Tree another way · Barntree</title>
+  <meta name="description" content="Show a Barntree Template as text, a Markdown document, folders or a Mermaid diagram, from the command line or the browser app.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html" aria-current="page">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Read a Tree another way</h1>
+        <p class="lede">One Tree, shown four ways.</p>
+<p>A <a href="glossary.html#projection">projection</a> turns a Template into something to read. It reads the Template’s saved tree and
+writes nothing unless you say where. Four are built in:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col"><code>--as</code></th><th scope="col">What you get</th></tr></thead><tbody><tr><td><code>text</code> (the default)</td><td>The indented tree, with each item’s tags after its name.</td></tr><tr><td><code>markdown</code></td><td>A document: a heading per item, with its type’s meaning beneath.</td></tr><tr><td><code>folder</code></td><td>A folder per item, each with a <code>README.md</code>. Without <code>--to</code>, the tree of folders it would write.</td></tr><tr><td><code>mermaid</code></td><td>A Mermaid <code>flowchart</code>, which GitHub draws as it is.</td></tr></tbody></table></div>
+<h2 id="text">Text <a class="anchor" href="#text" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment
+Barn: …/allotment
+Allotment
+|
++--Beds
++--Compost [Watered]
++--Shed</code></pre>
+<h2 id="document">Document <a class="anchor" href="#document" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=markdown
+Barn: …/allotment
+# Allotment
+
+The whole plot, from the gate to the far fence.
+
+## Beds
+
+The raised beds, each growing one crop at a time.
+
+## Compost \[Watered\]
+
+Where waste becomes next year's soil.
+
+## Shed
+
+Where the tools are kept dry.</code></pre>
+<h2 id="diagram">Diagram <a class="anchor" href="#diagram" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=mermaid
+Barn: …/allotment
+flowchart TD
+    n1["Allotment"]
+    n2["Beds"]
+    n1 --&gt; n2
+    n3["Compost"]
+    n1 --&gt; n3
+    n4["Shed"]
+    n1 --&gt; n4</code></pre>
+<p>Pipe it into <a href="https://github.com/mermaid-js/mermaid-cli">mermaid-cli</a> for an SVG:
+<code>barntree export Allotment --as=mermaid | mmdc -i - -o allotment.svg</code>. The Barn line goes to standard error, so a piped export
+holds only the projection.</p>
+<h2 id="folders">Folders <a class="anchor" href="#folders" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=folder
+Barn: …/allotment
+Allotment/
+├── README.md
+├── Beds/
+│   └── README.md
+├── Compost/
+│   └── README.md
+└── Shed/
+    └── README.md</code></pre>
+<p>Without <code>--to</code> that wrote nothing. With it:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=folder --to=garden-folders
+Barn: …/allotment
+Wrote garden-folders</code></pre>
+<pre><code><span class="p">$ </span>find garden-folders | sort
+garden-folders
+garden-folders/Beds
+garden-folders/Beds/README.md
+garden-folders/Compost
+garden-folders/Compost/README.md
+garden-folders/README.md
+garden-folders/Shed
+garden-folders/Shed/README.md</code></pre>
+<p><code>--to</code> never overwrites and never merges. A file must go to a path that doesn’t exist, and folders to one that doesn’t
+exist or is empty.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=folder --to=garden-folders
+Barn: …/allotment
+Will not write over "garden-folders": it already exists</code></pre>
+<p>An item whose name can’t be a folder is reported, every one at once, instead of being renamed. The members of a Template that has
+a saved tree are part of the export, and one of them is called <em>Why?</em>:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Odd --as=folder
+Barn: …/allotment
+These names cannot be folders: "Allotment/Beds/Why?": it has one of / \ : * ? " &lt; &gt; |</code></pre>
+<p>An unknown kind lists the ones there are:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment --as=pdf
+Cannot export as "pdf". Choose one of: text, markdown, folder, mermaid</code></pre>
+<h2 id="in-the-app">In the browser app <a class="anchor" href="#in-the-app" aria-label="Link to this section">#</a></h2>
+<p>Under a Template’s <em>Overview</em>, <strong>View and export</strong> previews the saved tree as <em>Tree</em>, <em>Document</em>,
+<em>Folders</em> or <em>Diagram</em>. Each has an <strong>Export</strong> button that downloads <code>allotment.txt</code>,
+<code>.md</code>, a <code>.zip</code> of the folders or the diagram as <code>.svg</code> or <code>.mmd</code>. That downloads a copy. To write a
+projection into your project, use <code>barntree export --to</code>.</p>
+<p>A Construction can’t be exported in this version.</p>
+        <div class="docs-next"><a href="history.html">← Revisions and history</a><a href="check.html">Check the Templates →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

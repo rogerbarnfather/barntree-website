@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check the Templates · Barntree</title>
+  <meta name="description" content="Check every Barntree Template in a project for broken rules, from the command line or a build.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html" aria-current="page">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Check the Templates</h1>
+        <p class="lede">Either every Template keeps its rules, or the check says which does not.</p>
+<p><code>check</code> reads every Template in the project and prints one line for each. A Template is <em>valid</em> when its types
+and its tree keep every rule, and <em>broken</em> otherwise, with the problem.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree check
+Barn: …/allotment
+Checking the trees in …/allotment/.barn/barntree/trees
+Allotment: valid</code></pre>
+<p>Make a Template that refers to a type it doesn’t have, and check again:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree check
+Barn: …/allotment
+Checking the trees in …/allotment/.barn/barntree/trees
+Allotment: valid
+Pond: broken: Type 'Pond' is of 'Fish', which is not one of the tree's types.</code></pre>
+<p>A file that doesn’t name a Template, or names one another file already holds, stops the check before any Template is read.
+Barntree won’t leave a Template out of the list without saying so:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree check
+Barn: …/allotment
+Checking the trees in …/allotment/.barn/barntree/trees
+fault: …/allotment/.barn/barntree/trees/Notes.barntree.json: it doesn't name a tree.</code></pre>
+<p>The exit status is 1 if any Template is broken or any file is a fault, and 0 otherwise, which makes it a step in a build:</p>
+<pre><code>- run: vendor/bin/barntree check</code></pre>
+<h2 id="where">Where it looks <a class="anchor" href="#where" aria-label="Link to this section">#</a></h2>
+<p><code>check</code> finds the barn from any folder inside it, and says which it is using. It reads <code>.barn/barntree/trees/</code>,
+every <code>.barntree.json</code> file in it, however deep. Outside any barn it refuses, writes nothing and exits with 1.</p>
+<pre><code><span class="p">$ </span>mkdir -p sub/deeper
+<span class="p">$ </span>cd sub/deeper
+<span class="p">$ </span>../../vendor/bin/barntree check
+Barn: …/allotment
+Checking the trees in …/allotment/.barn/barntree/trees
+Allotment: valid</code></pre>
+<p>It checks Templates. A Construction is validated whenever it is read.</p>
+        <div class="docs-next"><a href="export.html">← Read a Tree another way</a><a href="gui.html">The browser app →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

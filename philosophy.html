@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Philosophy · Barntree</title>
+  <meta name="description" content="Why Barntree puts meaning first, refuses edits that would break a Tree, and keeps every saved change as a revision.">
+  <link rel="icon" href="assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/base/base.css">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="philosophy.html" aria-current="page">Philosophy</a></li>
+          <li><a href="quick-start.html">Quick start</a></li>
+          <li><a href="docs/index.html">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="wrap prose">
+        <h1>Philosophy</h1>
+        <p class="lede">Why Barntree works the way it does.</p>
+<p>Barntree is built on a few decisions. Each one refuses something common in how structure is kept, and each shows in how the
+tool behaves.</p>
+<h2 id="meaning">Meaning comes first <a class="anchor" href="#meaning" aria-label="Link to this section">#</a></h2>
+<p>Every type has a name and a <strong>meaning</strong>, written in plain words, as long as it needs to be. A tree of names alone
+tells you where things sit and nothing of what they are for. A meaning is what a newcomer, or an AI agent, reads to understand the
+subject, so it is part of the Tree and not a comment beside it.</p>
+<p>That is why each Template has a glossary that puts every type and its meaning on one page, and shows only what you wrote.</p>
+<h2 id="valid">A Tree is never left half-broken <a class="anchor" href="#valid" aria-label="Link to this section">#</a></h2>
+<p>Barntree knows nothing of what a Tree is about. What it does know is the rules: a type must exist before anything refers to it,
+a map can’t hold itself forever, the members of one list have different names, and a leaf holds nothing. An edit that would break
+one is <strong>refused</strong>, with a message that says why, and nothing is changed.</p>
+<p>A file that was broken outside Barntree fails loudly when it is read, and says what is wrong and where. It does not repair it,
+guess, or leave a tree out without saying so. That makes the tool safer to drive than the file underneath, whether a person, a
+program or an agent is driving.</p>
+<h2 id="decisions">A decision is not rewritten <a class="anchor" href="#decisions" aria-label="Link to this section">#</a></h2>
+<p>A Template describes reusable structure. A Construction gives it real members, and <strong>keeps the exact revision it was
+made from</strong>, with its own copy of the types. Edit the Template tomorrow, rename it, delete it: the Construction is unchanged,
+and still says which revision it came from.</p>
+<h2 id="revisions">Every save is a revision <a class="anchor" href="#revisions" aria-label="Link to this section">#</a></h2>
+<p>Each explicit save records an immutable <strong>revision</strong>, and a save that changes nothing records none. Templates
+and Constructions each have their own history, so the current shape is understood together with how it came to be.
+A save made from a stale view is refused instead of overwriting newer work.</p>
+<h2 id="two-ways">One set of records, two ways in <a class="anchor" href="#two-ways" aria-label="Link to this section">#</a></h2>
+<p>The browser app and the command line work on the same records. Their presentation differs, but what is valid, how an item is
+identified, how a conflict is caught and where a revision begins and ends are the same in both.</p>
+<h2 id="realisation">A Tree outlives its realisation <a class="anchor" href="#realisation" aria-label="Link to this section">#</a></h2>
+<p>A folder structure, a diagram and a document are each one way to <em>show</em> a Tree. None of them is the Tree. So
+Barntree exports a Template as text, a document, a Mermaid diagram or folders, and never confuses the picture with the thing. The
+way a subject is understood is the durable part; what expresses it today can be replaced.</p>
+<p>A Tree is kept as plain JSON, so any language can read it.</p>
+<h2 id="refusals">What it refuses to be <a class="anchor" href="#refusals" aria-label="Link to this section">#</a></h2>
+<ul><li>A judge of the subject. Whether tomato soup is a good starter in August is for you to decide, not a Tree.</li><li>A tool that decides for you. When changing types would drop something, you compare before and after and keep the result only if that’s what you want.</li><li>A history inside the Tree. A Tree itself keeps none; a Template and a Construction do, in their revisions.</li><li>Tied to one subject or one language. A Tree can be the layers of a system, the rooms of a house or the courses of a dinner.</li></ul>
+<p>Next: the <a href="quick-start.html">quick start</a>, or <a href="docs/trees.html">types and items</a> in detail.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="index.html">Introduction</a>
+        <a href="philosophy.html" aria-current="page">Philosophy</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="docs/index.html">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

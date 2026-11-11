@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trees: types and items · Barntree</title>
+  <meta name="description" content="Types, leaves, lists and maps, items and members, the skeleton and tags: how a Barntree Tree is made.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html" aria-current="page">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Trees: types and items</h1>
+        <p class="lede">The types of one subject, and the tree that follows them.</p>
+<h2 id="types">Types <a class="anchor" href="#types" aria-label="Link to this section">#</a></h2>
+<p>A <a href="glossary.html#type">type</a> names one kind of thing in the subject. Each has:</p>
+<ul><li>an <strong>identifier</strong>, which other types refer to it by. It defaults to the name and never changes. (The file calls it the type’s key.)</li><li>a <strong>name</strong>, for people to read;</li><li>a <strong>meaning</strong>, which explains what it is;</li><li>a <strong>kind</strong>: leaf, list or map.</li></ul>
+<p>The browser app and the command line call a type a <em>building block</em>. This documentation says type.</p>
+<h3 id="kinds">Leaf, list and map <a class="anchor" href="#kinds" aria-label="Link to this section">#</a></h3>
+<ul><li>A <strong>leaf</strong> is of nothing. A compost heap is a leaf.</li><li>A <strong>list</strong> is of exactly one type. The beds are a list of Bed.</li><li>A <strong>map</strong> is of a set of types, each at most once. An allotment is a map of Beds, Compost, Greenhouse and Shed.</li></ul>
+<p>A map’s children are in alphabetical order by name, ignoring case, with the identifier breaking ties. A list’s members keep
+the sequence they were added in.</p>
+<p>The Tree names its <strong>root</strong> type, which can be of any kind. Types refer to each other only by identifier, so one
+type can be used in many places. A type that holds itself through maps alone is refused, because an item of it could never end.</p>
+<h3 id="meaning">Meaning <a class="anchor" href="#meaning" aria-label="Link to this section">#</a></h3>
+<p>A meaning should be clear and concise, with enough detail for a person or an AI agent to understand the tree. Use as many
+sentences or paragraphs as you need. It is shown beside the type everywhere, and the Template’s glossary puts every meaning on one
+page. Barntree writes none of them.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree type:show Allotment Beds
+Barn: …/allotment
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+File token: 5f075e17e9f96751d733594974e8696b748ec2aeafa09d1342c5a0f819e70106
+identifier: Beds
+name: Beds
+meaning: The raised beds, each growing one crop at a time.
+kind: list
+of:
+  0: Bed
+tags:
+uses:
+  0: Allotment
+root: no
+items:
+  0: 84fc43d1a40986ec
+structure:
+  Beds [Beds, list]
+    Bed [Bed, leaf]</code></pre>
+<p><code>uses</code> are the types that hold this one; <code>items</code> are the ids of its items in the saved tree.</p>
+<h2 id="items">Items <a class="anchor" href="#items" aria-label="Link to this section">#</a></h2>
+<p>The tree is made of <a href="glossary.html#item">items</a>. An item follows one type, and has an <strong>id</strong> that Barntree
+generates and nobody types. What it holds depends on its type’s kind:</p>
+<ul><li>a map item holds one item for each type of its map;</li><li>a list item holds its <strong>members</strong>, any number of them, each with a name you give it;</li><li>a leaf item holds nothing.</li></ul>
+<p>Every item is an item of its own, list items included, so a list can be the root. The root item and the members have names. Any
+other item takes its type’s name. The members of one list have different names, and so do the entries of one map, so a path of names
+from the root finds at most one item.</p>
+<h2 id="skeleton">The skeleton <a class="anchor" href="#skeleton" aria-label="Link to this section">#</a></h2>
+<p>A Template can leave its tree out, and most hand-written ones do. Barntree then builds the <strong>skeleton</strong>: the root,
+and every map entry below it, down to empty lists and leaves, each with a fresh id. Save the Template once and the ids stay the same
+from then on. A new Construction always starts from the skeleton.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree template:show Allotment --view=skeleton
+Barn: …/allotment
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+File token: 5f075e17e9f96751d733594974e8696b748ec2aeafa09d1342c5a0f819e70106
+Allotment [Allotment, map]
+  Beds [Beds, list]
+  Compost [Compost, leaf]
+  Shed [Shed, leaf]</code></pre>
+<p>The same Template with the beds added is on the <a href="templates.html#show">Keep a Template</a> page, and the Construction made from it is on the <a href="constructions.html">next</a>.</p>
+<h2 id="tags">Tags <a class="anchor" href="#tags" aria-label="Link to this section">#</a></h2>
+<p>A Tree can declare <strong>tags</strong>, each with a name and a meaning, and a type can carry some of them. A tag says that types in
+different places belong together, which the tree on its own can’t say. A house tags its kitchen and its bathroom <em>Plumbed</em>,
+one on each floor. Every item of a tagged type carries its tags. A declared tag that no type carries is kept.</p>
+<p>In the allotment, a bed and the compost heap both need <em>Watered</em>. The tags are written in the Template’s file, and shown by
+the app and by an export. The app and the command line don’t edit them.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree export Allotment
+Allotment
+|
++--Beds
++--Compost [Watered]
++--Greenhouse
++--Shed</code></pre>
+<p>A Tree without tags refuses a document that has them.</p>
+<h2 id="not">What a Tree does not do <a class="anchor" href="#not" aria-label="Link to this section">#</a></h2>
+<ul><li>It knows nothing of what it is about. Whether a tomato soup is a good starter in August is for you to decide.</li><li>It keeps no history of itself. An edit returns a new Tree. When to save it, and whether to keep the old one, is up to you: Templates and Constructions keep <a href="history.html">revisions</a>.</li></ul>
+        <div class="docs-next"><a href="index.html">← Overview</a><a href="templates.html">Keep a Template →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

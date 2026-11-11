@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossary · Barntree</title>
+  <meta name="description" content="The words Barntree uses, each defined once.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html" aria-current="page">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Glossary</h1>
+        <p class="lede">Each word has one meaning across this site.</p>
+<dl class="glossary">
+<dt id="barn">Barn <a class="anchor" href="#barn" aria-label="Link to this term">#</a></dt><dd>A project with a <code>.barn/</code> folder at its root. Barntree finds it from any folder inside the project.</dd>
+<dt id="construction">Construction <a class="anchor" href="#construction" aria-label="Link to this term">#</a></dt><dd>A named tree of real members, made from a Template. It keeps the Template revision it started from, and its own copy of the types.</dd>
+<dt id="document-id">Document id <a class="anchor" href="#document-id" aria-label="Link to this term">#</a></dt><dd>The id that identifies a Template or a Construction for good. It does not change when you rename it.</dd>
+<dt id="glossary">Glossary <a class="anchor" href="#glossary" aria-label="Link to this term">#</a></dt><dd>A Template’s view that puts every type and its meaning on one page. It shows only what was written.</dd>
+<dt id="identifier">Identifier <a class="anchor" href="#identifier" aria-label="Link to this term">#</a></dt><dd>What other types refer to a type by. It defaults to the name and never changes.</dd>
+<dt id="item">Item <a class="anchor" href="#item" aria-label="Link to this term">#</a></dt><dd>One element of the tree, following one type. It has an id that Barntree generates.</dd>
+<dt id="kind">Kind <a class="anchor" href="#kind" aria-label="Link to this term">#</a></dt><dd>What a type holds: <em>leaf</em>, <em>list</em> or <em>map</em>.</dd>
+<dt id="leaf">Leaf <a class="anchor" href="#leaf" aria-label="Link to this term">#</a></dt><dd>A type of nothing. An item of it holds nothing.</dd>
+<dt id="list">List <a class="anchor" href="#list" aria-label="Link to this term">#</a></dt><dd>A type of exactly one type. Its items hold members, any number, each with a name.</dd>
+<dt id="map">Map <a class="anchor" href="#map" aria-label="Link to this term">#</a></dt><dd>A type of a set of types, each at most once. Its items hold one item for each.</dd>
+<dt id="meaning">Meaning <a class="anchor" href="#meaning" aria-label="Link to this term">#</a></dt><dd>What a type is, in plain words, as long as needed.</dd>
+<dt id="member">Member <a class="anchor" href="#member" aria-label="Link to this term">#</a></dt><dd>An item in a list, with a name you give it. Members of one list have different names.</dd>
+<dt id="projection">Projection <a class="anchor" href="#projection" aria-label="Link to this term">#</a></dt><dd>A Template shown another way: as text, a document, folders or a diagram. It never changes the Template.</dd>
+<dt id="revision">Revision <a class="anchor" href="#revision" aria-label="Link to this term">#</a></dt><dd>One saved state of a Template or a Construction. Immutable. An explicit save that changes something records one.</dd>
+<dt id="root">Root <a class="anchor" href="#root" aria-label="Link to this term">#</a></dt><dd>The type the tree starts from, and its item. It can be of any kind.</dd>
+<dt id="skeleton">Skeleton <a class="anchor" href="#skeleton" aria-label="Link to this term">#</a></dt><dd>The starting tree: the root and every map entry below it, down to empty lists and leaves.</dd>
+<dt id="snapshot">Snapshot <a class="anchor" href="#snapshot" aria-label="Link to this term">#</a></dt><dd>A revision read as it was, read-only.</dd>
+<dt id="source">Source <a class="anchor" href="#source" aria-label="Link to this term">#</a></dt><dd>The Template revision a Construction was made from, which it keeps.</dd>
+<dt id="tag">Tag <a class="anchor" href="#tag" aria-label="Link to this term">#</a></dt><dd>A named label, with a meaning, that types in different places can carry.</dd>
+<dt id="template">Template <a class="anchor" href="#template" aria-label="Link to this term">#</a></dt><dd>A Tree kept in your project, to make Constructions from. It is the types and their skeleton, in one file.</dd>
+<dt id="token">Token <a class="anchor" href="#token" aria-label="Link to this term">#</a></dt><dd>A fingerprint of a Template’s exact current file, used to refuse a change based on a stale view. Not a revision id.</dd>
+<dt id="tree">Tree <a class="anchor" href="#tree" aria-label="Link to this term">#</a></dt><dd>The types of one subject, and the tree of items that follows them. Also, written small, the arrangement of items.</dd>
+<dt id="type">Type <a class="anchor" href="#type" aria-label="Link to this term">#</a></dt><dd>One kind of thing in a subject, with an identifier, a name, a meaning and a kind. The browser app and the command line call it a building block.</dd>
+</dl>
+        <div class="docs-next"><a href="data.html">← Where your data lives</a><a href="troubleshooting.html">When something goes wrong →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

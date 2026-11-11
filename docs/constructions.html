@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Make a Construction · Barntree</title>
+  <meta name="description" content="Make a Barntree Construction from a Template, add, rename and remove its members, and read the Template it came from.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html" aria-current="page">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Make a Construction</h1>
+        <p class="lede">Real members, following a Template’s rules.</p>
+<p>A <a href="glossary.html#construction">Construction</a> is a named tree of real members, made from a Template. Where the
+Template says that a plot holds beds, a Construction says which beds <em>this</em> plot has. It captures the Template’s revision and
+its own copy of the types, so it can be read and saved without the Template, and later Template changes can’t alter it.</p>
+<h2 id="create">Make one <a class="anchor" href="#create" aria-label="Link to this section">#</a></h2>
+<p>Name it and say which Template it follows. It starts from the skeleton, with the Template’s required map children and every
+list empty, and receives revision 1. Barntree makes it from the Template’s <em>saved</em> state, so a Template with unsaved edits
+must be saved or discarded first. Construction names can repeat, because each is its own document with its own id:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:create Allotment --name="Plot 12"
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 1 (3ead1efb447667fabc3edc3520dc4d39)
+Barn: …/allotment</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:list
+Barn: …/allotment
++--------------------+----------------------------------+----------+-----------------+
+| Name               | Document ID                      | Revision | Source Template |
++--------------------+----------------------------------+----------+-----------------+
+| Plot 12            | cb10aae9af5e9815f70da04037b71055 | 1        | Allotment       |
+| Plot 12, north end | 3207a1c11fb74907574c9158b2fa812f | 7        | Allotment       |
++--------------------+----------------------------------+----------+-----------------+</code></pre>
+<p>A deliberate <code>construction:create</code> always makes a new one. If the output is lost, list before trying again.</p>
+<h2 id="show">Read it <a class="anchor" href="#show" aria-label="Link to this section">#</a></h2>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:show 3207a1c11fb74907574c9158b2fa812f
+Plot 12
+Revision: 3 (f3d1bd75b615327c68370767096738d8)
+Allotment [Allotment, map] id=a6613e89bc389b77
+  Beds [Beds, list] id=dc06e11b23467d1a
+    Beans [Bed, leaf] id=67186afc688414fe
+    Carrots [Bed, leaf] id=7c49afd08c65dd98
+  Compost [Compost, leaf] id=2b278038cbdda93e
+  Shed [Shed, leaf] id=c3c827fbf214f947</code></pre>
+<p>Each item shows its id. You point at an item by its id, so a member’s name can hold spaces, slashes or other punctuation
+without any escaping. <code>--view=overview</code> gives the Construction’s summary, and <code>--view=source</code> reads the exact
+Template revision it was made from:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:show 3207a1c11fb74907574c9158b2fa812f --view=source
+Allotment
+Revision: 1 (3c46bfb7e7251ee4a668cf2dd6a79557)
+Allotment [Allotment, map]
+  Beds [Beds, list]
+    Bed [Bed, leaf]
+  Compost [Compost, leaf]
+  Shed [Shed, leaf]</code></pre>
+<p>That is the Template as it was when the Construction was made, even though the Template has since gained a Greenhouse, been
+renamed or been deleted.</p>
+<h2 id="members">Add, rename and remove members <a class="anchor" href="#members" aria-label="Link to this section">#</a></h2>
+<p>Only two things about a Construction change: its name, and the <strong>members</strong> of its lists. The required map
+children and the types it captured are protected. Each successful change saves at once as one revision. A change that alters nothing
+records none.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name="Beans"
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 2 (372bbb6fad1f6bde9869042c7fcfcb29)
+Barn: …/allotment</code></pre>
+<p>Rename keeps a member’s id, kind and children:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:rename 3207a1c11fb74907574c9158b2fa812f 7c49afd08c65dd98 --name="Courgettes"
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 4 (774a0ce3377400ef1a4a0d2edd23c570)
+Barn: …/allotment</code></pre>
+<p>Removing a member removes everything below it, so it asks. Interactively, the preview lists every item that would go and the
+answer defaults to No. Scripts, piped input and <code>--no-interaction</code> refuse unless you say <code>--yes</code>:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:remove 3207a1c11fb74907574c9158b2fa812f 7c49afd08c65dd98
+Removal needs confirmation. Use --yes to confirm.</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:remove 3207a1c11fb74907574c9158b2fa812f 7c49afd08c65dd98 --yes
+Saved: Plot 12
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 5 (99459a8719ba0fb2f78c9342ba13a818)
+Barn: …/allotment</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree construction:rename 3207a1c11fb74907574c9158b2fa812f "Plot 12, north end"
+Saved: Plot 12, north end
+Construction: 3207a1c11fb74907574c9158b2fa812f
+Revision: 6 (b22d76bfef58f6ed13433a0c2dda5e33)
+Barn: …/allotment</code></pre>
+<h3 id="refused">What is refused <a class="anchor" href="#refused" aria-label="Link to this section">#</a></h3>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name="Beans"
+List item 'dc06e11b23467d1a' has two members named 'Beans'.</code></pre>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=&lt;Compost’s id&gt; --name="X"
+The item at 'Compost' follows 'Compost', a leaf, so it can't hold members: only a list item can.</code></pre>
+<p>The members of one list must have different names, and only a list item can hold members.</p>
+<h2 id="scripts">Scripts and the same change twice <a class="anchor" href="#scripts" aria-label="Link to this section">#</a></h2>
+<p>Every write command takes <code>--json</code>. Standard output then holds only the JSON, and anything else goes to standard
+error. The result says what changed, with the new revision and the revision it follows:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name=Leeks --json
+{
+    "schemaVersion": 1,
+    "barnRoot": "…/allotment",
+    "operation": "member:add",
+    "changed": true,
+    "name": "Plot 12, north end",
+    "documentId": "3207a1c11fb74907574c9158b2fa812f",
+    "revisionId": "2bf0d1a7305e04466b1bf67af4dfb5d8",
+    "number": 7,
+    "token": null,
+    "baseline": false,
+    "source": {
+        "documentId": "bd3708f38810ec991ef9a2470b5abe52",
+        "revisionId": "3c46bfb7e7251ee4a668cf2dd6a79557",
+        "number": 1,
+        "name": "Allotment"
+    },
+    "matchesSavedRevision": true,
+    "kind": "construction",
+    "previousRevisionId": "b22d76bfef58f6ed13433a0c2dda5e33",
+  …</code></pre>
+<p>To make a change on the strength of something you read, give <code>--expect-revision=REVISION</code>. If the Construction has
+moved on since, the change is refused and the newer work is kept. Every save also checks its base at the moment it commits, even
+while a confirmation is waiting.</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree member:add 3207a1c11fb74907574c9158b2fa812f --list=dc06e11b23467d1a --name="Leeks" --expect-revision=00000000000000000000000000000000
+Construction revision conflict.</code></pre>
+<p>Exit status is 0 on success, and 1 for a refusal, a conflict or a declined confirmation.</p>
+<h2 id="in-the-app">In the browser app <a class="anchor" href="#in-the-app" aria-label="Link to this section">#</a></h2>
+<p>The same records open in the app. Select <em>Construct</em> on a Template to make one. In a Construction, <strong>+ Add</strong> on
+a list adds a member, and the member’s own page renames or removes it. <a href="gui.html">The browser app</a> has the rest.</p>
+<figure><div class="shot"><div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Barntree · Construction</span></div><img src="../assets/screens/barntree-cs-tree.webp" width="2560" height="1040" loading="lazy" alt="A Construction called Plot 12, north end. Beds holds two members, Beans and Leeks, each of type Bed and tagged Watered, with a dashed Add Bed button beneath them."></div><figcaption>A Construction in the browser app, with its members and the type each follows.</figcaption></figure>
+        <div class="docs-next"><a href="templates.html">← Keep a Template</a><a href="history.html">Revisions and history →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

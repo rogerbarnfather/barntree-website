@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When something goes wrong · Barntree</title>
+  <meta name="description" content="What each Barntree message means and what to do about it.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html" aria-current="page">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>When something goes wrong</h1>
+        <p class="lede">Each message, as Barntree prints it.</p>
+<p>Barntree says what is wrong and, where it can, where. Each message below was produced by the command beside it.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">What it says</th><th scope="col">When</th><th scope="col">What to do</th></tr></thead><tbody><tr><td><code>No barn found. Run barntree init to make one.</code></td><td><code>template:list outside a barn</code></td><td>Run <code>barntree init</code> in the project’s root, or work inside a folder that has <code>.barn/</code>.</td></tr><tr><td><code>No tree called 'Nothing' is kept in '…/allotment/.barn/barntree/trees'.</code></td><td><code>template:show with a name no Template has</code></td><td>Run <code>template:list</code> for the names. A name that holds a mistake is the usual cause.</td></tr><tr><td><code>Supply --from-file=&lt;JSON file&gt; or --from-file=-.</code></td><td><code>template:create with no file</code></td><td>Give it a JSON file, or <code>-</code> for standard input.</td></tr><tr><td><code>No saved construction revision was found for '&lt;id&gt;'.</code></td><td><code>construction:show with an id Barntree doesn’t have</code></td><td>Use the id that <code>construction:list</code> prints.</td></tr><tr><td><code>Unknown item ID: &lt;id&gt;</code></td><td><code>member:add with an item that no longer exists</code></td><td>Read the Construction again: removing a member removes its id.</td></tr><tr><td><code>List item '&lt;id&gt;' has two members named 'Beans'.</code></td><td><code>member:add with a name the list already holds</code></td><td>Choose another name.</td></tr><tr><td><code>The item at 'Compost' follows 'Compost', a leaf, so it can't hold members: only a list item can.</code></td><td><code>member:add on an item that is not a list</code></td><td>Use the id of a list item.</td></tr><tr><td><code>Construction revision conflict.</code></td><td><code>member:add with a stale --expect-revision</code></td><td>Read the Construction, and decide again. Nothing was overwritten.</td></tr><tr><td><code>Removal needs confirmation. Use --yes to confirm.</code></td><td><code>member:remove with no --yes, not at a prompt</code></td><td>Add <code>--yes</code> once you know what goes.</td></tr><tr><td><code>Delete Template: Allotment</code></td><td><code>template:delete or a structural change with no --yes</code></td><td>Add <code>--yes</code>.</td></tr><tr><td><code>This building block is still used.</code></td><td><code>type:delete on a type something holds</code></td><td>Remove the connections that use it first.</td></tr><tr><td><code>Page exceeds the available history.</code></td><td><code>a history page past the last</code></td><td>Use a lower <code>--page</code>.</td></tr><tr><td><code>Will not write over "garden-folders": it already exists</code></td><td><code>export --to a path that exists</code></td><td>Choose a path that doesn’t exist yet, or an empty folder for folders.</td></tr><tr><td><code>Cannot export as "pdf". Choose one of: text, markdown, folder, mermaid</code></td><td><code>export --as with an unknown kind</code></td><td>The message lists the kinds there are.</td></tr><tr><td><code>These names cannot be folders: "Allotment/Beds/Why?": it has one of / \ : * ? " &lt; &gt; |</code></td><td><code>export --as=folder with an item name that can’t be a folder</code></td><td>Rename the items it names. Every one is reported at once.</td></tr></tbody></table></div>
+<h2 id="broken">A Template is broken <a class="anchor" href="#broken" aria-label="Link to this section">#</a></h2>
+<p><a href="check.html">The check</a> says which, and why:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree check
+Barn: …/allotment
+Checking the trees in …/allotment/.barn/barntree/trees
+Allotment: valid
+Pond: broken: Type 'Pond' is of 'Fish', which is not one of the tree's types.</code></pre>
+<p>Open the file and fix what it names, or restore it from version control. A file that doesn’t name a Template, or names one another file
+already holds, stops the check before any Template is read, as <code>fault: &lt;file&gt;: &lt;reason&gt;</code>. One bad file refuses its whole folder, because a
+Template left out without a word would be worse.</p>
+<h2 id="external">A file I changed by hand doesn’t match its history <a class="anchor" href="#external" aria-label="Link to this section">#</a></h2>
+<p>A file edited outside Barntree can differ from its last recorded revision, and a read says so. Open it in the app, or save it through a
+command, and the save records what was there first.</p>
+<h2 id="limits">Known limits <a class="anchor" href="#limits" aria-label="Link to this section">#</a></h2>
+<ul><li>A document that breaks a rule reports one rule at a time. Only a document that doesn’t fit the shape reports every fault at once.</li><li>Members’ names are matched exactly as typed, so <em>Kitchen</em> and <em>kitchen</em> can sit in one list.</li><li>The store reads its folder once, when it is first asked. A file added after that is not seen until a new store is made.</li><li>A Construction can’t be exported, restored to an earlier revision, or moved to a newer Template yet.</li><li>Tags are written in the file and not edited in the app or on the command line.</li></ul>
+        <div class="docs-next"><a href="glossary.html">← Glossary</a><span></span></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

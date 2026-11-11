@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Where your data lives · Barntree</title>
+  <meta name="description" content="Where Barntree keeps its files in a barn, and the shape of a Template document.">
+  <link rel="icon" href="../assets/barntree.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/base/base.css">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-brand="tree">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><svg class="mark tool-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8V27.5M11 14.5L16 8L21 14.5M10 21L16 14.5L22 21"/></svg>Barntree</a>
+      <nav aria-label="Barntree">
+        <ul class="nav">
+          <li><a href="../philosophy.html">Philosophy</a></li>
+          <li><a href="../quick-start.html">Quick start</a></li>
+          <li><a href="index.html" aria-current="page">Documentation</a></li>
+          <li><a href="https://rogerbarnfather.github.io/barn-website/">Barn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="docs wrap wide">
+      <nav class="docs-nav" aria-label="Documentation"><h2>Start</h2><ul><li><a href="index.html">Overview</a></li><li><a href="trees.html">Trees: types and items</a></li></ul><h2>Tasks</h2><ul><li><a href="templates.html">Keep a Template</a></li><li><a href="constructions.html">Make a Construction</a></li><li><a href="history.html">Revisions and history</a></li><li><a href="export.html">Read a Tree another way</a></li><li><a href="check.html">Check the Templates</a></li></ul><h2>Tools</h2><ul><li><a href="gui.html">The browser app</a></li><li><a href="cli.html">Command reference</a></li><li><a href="php.html">From PHP</a></li><li><a href="install.html">Installation</a></li><li><a href="data.html" aria-current="page">Where your data lives</a></li></ul><h2>Reference</h2><ul><li><a href="glossary.html">Glossary</a></li><li><a href="troubleshooting.html">When something goes wrong</a></li></ul></nav>
+      <article class="docs-article">
+        <h1>Where your data lives</h1>
+        <p class="lede">Plain JSON in a folder you commit.</p>
+<p>Every Barn tool keeps its files in one <code>.barn/</code> folder at the project’s root. Barntree’s are in
+<code>.barn/barntree/</code>. Commit <code>.barn/</code> with the rest of the project.</p>
+<pre><code><span class="p">$ </span>find .barn -type f | sed … | sort -u
+.barn/barntree/template-history/catalogue.barntree.json
+.barn/barntree/template-history/save.lock
+.barn/barntree/trees/Allotment.barntree.json
+.barn/barntree/workspace/construction/&lt;sha256&gt;/&lt;sha256&gt;.barntree.json
+.barn/barntree/workspace/construction/&lt;sha256&gt;/current.barntree.json
+.barn/barntree/workspace/construction/&lt;sha256&gt;/save.lock</code></pre>
+<div class="table-wrap"><table><thead><tr><th scope="col">Where</th><th scope="col">What it holds</th></tr></thead><tbody><tr><td><code>trees/</code></td><td>The Templates, one <code>.barntree.json</code> file each, named after the Template. A subfolder is fine.</td></tr><tr><td><code>template-history/</code></td><td>The Templates’ revisions: one catalogue file holding every immutable revision, with the Templates’ identities, and a <code>save.lock</code>.</td></tr><tr><td><code>workspace/construction/</code></td><td>One folder per Construction: a file for each revision, <code>current.barntree.json</code>, and a <code>save.lock</code>.</td></tr></tbody></table></div>
+<p>A Template’s identity is its <strong>name</strong>, not its path. A Template is found by the name inside its file. The folder is made when the
+first Template is saved.</p>
+<h2 id="document">The Template document <a class="anchor" href="#document" aria-label="Link to this section">#</a></h2>
+<p>This is the Allotment Template exactly as Barntree saved it, after the steps in this documentation. You can write one by hand and drop it into
+<code>trees/</code>; leave the <code>tree</code> out and the skeleton is built for you. Once it is there, change it through the tools.</p>
+<pre><code>{
+    "formatVersion": 1,
+    "name": "Allotment",
+    "description": "A plot of ground, rented to grow food on, with a path to every bed.",
+    "root": "Allotment",
+    "tags": {
+        "Watered": {
+            "meaning": "Needs watering in dry weather."
+        }
+    },
+    "types": {
+        "Allotment": {
+            "name": "Allotment",
+            "meaning": "The whole plot, from the gate to the far fence.",
+            "kind": "map",
+            "of": [
+                "Beds",
+                "Compost",
+                "Greenhouse",
+                "Shed"
+            ]
+        },
+        "Beds": {
+            "name": "Beds",
+            "meaning": "The raised beds, each growing one crop at a time.",
+            "kind": "list",
+            "of": "Bed"
+        },
+        "Bed": {
+            "name": "Bed",
+            "meaning": "One raised bed.",
+            "kind": "leaf",
+            "tags": [
+                "Watered"
+            ]
+        },
+        "Compost": {
+            "name": "Compost",
+            "meaning": "Where waste becomes next year's soil.",
+            "kind": "leaf",
+            "tags": [
+                "Watered"
+            ]
+        },
+        "Shed": {
+            "name": "Shed",
+            "meaning": "Where the tools are kept dry.",
+            "kind": "leaf"
+        },
+        "Greenhouse": {
+            "name": "Greenhouse",
+            "meaning": "Where seedlings start.",
+            "kind": "leaf"
+        }
+    },
+    "tree": {
+        "root": "611a24099c919a13",
+        "items": {
+            "611a24099c919a13": {
+                "type": "Allotment",
+                "name": "Allotment",
+                "containing": {
+                    "Beds": "84fc43d1a40986ec",
+                    "Compost": "b22180b6376092de",
+                    "Greenhouse": "66ef45a6aafa094e",
+                    "Shed": "e0581a7c83808a45"
+                }
+            },
+            "84fc43d1a40986ec": {
+                "type": "Beds",
+                "containing": []
+            },
+            "b22180b6376092de": {
+                "type": "Compost"
+            },
+            "e0581a7c83808a45": {
+                "type": "Shed"
+            },
+            "66ef45a6aafa094e": {
+                "type": "Greenhouse"
+            }
+        }
+    }
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>formatVersion</code></td><td>The only version there is is 1. Any other is refused.</td></tr><tr><td><code>name</code>, <code>description</code></td><td>The Template’s name, and what it is for. Neither can be blank.</td></tr><tr><td><code>root</code></td><td>The identifier of the root type.</td></tr><tr><td><code>tags</code></td><td>Optional. The tags a type may carry, each with its meaning.</td></tr><tr><td><code>types</code></td><td>At least one, by identifier. Each has a <code>name</code>, a <code>meaning</code> and a <code>kind</code> (<code>leaf</code>, <code>list</code> or <code>map</code>); <code>of</code> is a list’s one type or a map’s types, and left out for a leaf; <code>tags</code> are declared tags, each once.</td></tr><tr><td><code>tree</code></td><td>Optional. <code>root</code> is the root item’s id; each entry of <code>items</code> has its <code>type</code>, a <code>name</code> (the root and members only) and <code>containing</code>: an object of type to id for a map, a list of ids for a list, left out for a leaf.</td></tr></tbody></table></div>
+<p>Map entries and references are written in alphabetical order, and Barntree puts them in order whenever it reads, edits or writes a Tree,
+without changing any id or any list’s sequence.</p>
+<h2 id="writes">How it is written <a class="anchor" href="#writes" aria-label="Link to this section">#</a></h2>
+<p>A save locks the catalogue and compares a SHA-256 token of the exact current file, so a stale draft can’t overwrite an outside edit. The new
+file is written next to the old one and swapped in atomically. If a save is interrupted, the next operation recovers it. This protects
+against a partial file; it is not a promise against power loss, a network file system, or an outside writer that ignores the lock.</p>
+<p>A broken, unreadable or unnameable file is reported, with its path. See <a href="troubleshooting.html">when something goes wrong</a>.</p>
+        <div class="docs-next"><a href="install.html">← Installation</a><a href="glossary.html">Glossary →</a></div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Barntree · © Roger Barnfather</span>
+      <nav aria-label="Footer">
+        <a href="../index.html">Introduction</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../quick-start.html">Quick start</a>
+        <a href="index.html" aria-current="page">Documentation</a>
+        <a href="https://rogerbarnfather.github.io/barn-website/">Barn</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
