@@ -6,7 +6,7 @@ win for anything they state. This guide adds only Barntree's vocabulary, colour 
 
 ## 1. Colour
 
-Barntree is sky blue. Every page has `<body data-brand="tree">`, and components read `--brand`,
+Barntree is mint. Every page has `<body data-brand="tree">`, and components read `--brand`,
 `--brand-ink`, `--brand-text`, `--brand-bright` and `--brand-tint`. No hex value appears in a page or in
 `assets/site.css`; the tokens come from `assets/base/tokens.css`.
 
