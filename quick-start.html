@@ -193,6 +193,15 @@ Allotment/
 <pre><code><span class="p">$ </span>vendor/bin/barntree gui</code></pre>
 <p>This serves the barn on your own machine and opens it in your browser, on port 8082 or the next free one. Stop it with
 Ctrl-C. Your Constructions and Templates are listed on the left. The <a href="docs/gui.html">browser app</a> page covers the rest.</p>
+<h2 id="agent-skills">Let your AI agent help <a class="anchor" href="#agent-skills" aria-label="Link to this section">#</a></h2>
+<p>If you work with an AI agent, copy Barntree’s agent skills into the project:</p>
+<pre><code><span class="p">$ </span>vendor/bin/barntree skills:install
+barntree-designing-a-tree: 1 written, 0 up to date, 0 left as you changed them
+barntree-getting-started: 2 written, 0 up to date, 0 left as you changed them
+barntree-php-api: 2 written, 0 up to date, 0 left as you changed them
+Skills are in …/garden/.claude/skills</code></pre>
+<p>These are three skills in <code>.claude/skills/</code>, the folder Claude Code reads (<code>--dir=&lt;folder&gt;</code> for another agent’s). They teach your agent what a Tree is, the commands that read and the ones that write, how to model something as a Tree, and how to use Barntree’s PHP library. Ask it to model something for you or explain why a change was refused: it reads what exists first, shows you a draft, and writes through the commands only once you agree.</p>
+<p>Run the command again after updating Barntree: files you have changed are kept unless you pass <code>--force</code>.</p>
 <h2 id="where-next">Where next <a class="anchor" href="#where-next" aria-label="Link to this section">#</a></h2>
 <ul><li><a href="docs/trees.html">Trees: types and items</a>: the three kinds of type, and how a tree follows them.</li><li><a href="docs/templates.html">Keep a Template</a>: change types, copy a Template, delete one.</li><li><a href="docs/constructions.html">Make a Construction</a>: add, rename and remove members.</li><li><a href="philosophy.html">Philosophy</a>: why a Tree is never repaired for you, and why history is kept.</li></ul>
 <p class="in-barn-left">Used in Barn: in a <a href="https://rogerbarnfather.github.io/barn-website/barn.html">barn</a>, Barntree keeps its records in <code>.barn/barntree/</code>. <code>barntree init</code> makes any project a barn so Barntree can work on its own.</p>
