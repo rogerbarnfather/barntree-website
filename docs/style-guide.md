@@ -34,7 +34,7 @@ header navigation is the same on every page: Philosophy, Quick start, Documentat
 
 ## 4. Exceptions
 
-- The site header's wordmark is Barntree's own mark in a blue tile, not the Barn barn mark. Reason: each
+- The site header's wordmark is Barntree's own mark in a mint tile, not the Barn barn mark. Reason: each
   tool site reads as if the other tools did not exist (website guide §1). The `.tool-mark` rule is in
   `assets/site.css`.
 - The header links to the main Barn site as "Barn", in place of the tool tabs of the main site.
